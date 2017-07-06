@@ -1,7 +1,9 @@
 package dueros
 
 import (
+	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -23,7 +25,7 @@ func TestDefaultAuthorizer_Authorize(t *testing.T) {
 
 func TestVoiceClient_TextToSpeech(t *testing.T) {
 	client := NewVoiceClient(apiKey, apiSecret)
-	file, err := client.TextToSpeech("哈哈哈哈哈哈哈哈哈")
+	file, err := client.UseDefaultTTSConfig().TextToSpeech("你叫什么名字啊？")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,5 +37,36 @@ func TestVoiceClient_TextToSpeech(t *testing.T) {
 	if _, err := f.Write(file); err != nil {
 		t.Fatal(err)
 	}
+	t.Log("testing passed.")
+}
+
+func TestVoiceClient_SpeechToText(t *testing.T) {
+	client := NewVoiceClient(apiKey, apiSecret)
+	f, err := os.OpenFile("hello.wav", os.O_RDONLY, 0666)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fi, err := ioutil.ReadAll(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	afterBase64Str := base64.StdEncoding.EncodeToString(fi)
+	fiLen := len(fi)
+	param := ASRParams{
+		Format:  "wav",
+		Rate:    16000,
+		Channel: 1,
+		Cuid:    "12312312112",
+		Token:   client.AccessToken,
+		Lan:     "zh",
+		Speech:  afterBase64Str,
+		Len:     fiLen,
+	}
+	fmt.Println(param.Token)
+	rs, err := client.SpeechToText(param)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(rs)
 	t.Log("testing passed.")
 }
