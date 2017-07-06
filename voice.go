@@ -10,22 +10,43 @@ import (
 	"github.com/imroc/req"
 )
 
-const TSN_URL string = "http://tsn.baidu.com/text2audio"
-const VOP_URL string = "http://vop.baidu.com/server_api"
-const VOICE_AUTH_URL string = "https://openapi.baidu.com/oauth/2.0/token"
+const (
+	VOICE_AUTH_URL string = "https://openapi.baidu.com/oauth/2.0/token"
+	TTS_URL        string = "http://tsn.baidu.com/text2audio"
+	ASR_URL        string = "http://vop.baidu.com/server_api"
+)
+const (
+	B = 1 << (10 * iota)
+	KB
+	MB
+)
 
-type TSNRequest struct {
-}
-type TSNResponse struct {
+type TTSResponse struct {
 }
 
-type VOPRequest struct {
+//语音识别响应信息
+type ASRResponse struct {
+	CorpusNo string   `json:"corpus_no"`
+	ERRMSG   string   `json:"err_msg"`
+	ERRNO    int      `json:"err_no"`
+	Result   []string `json:"result"`
+	SN       string   `json:"sn"`
 }
-type VOPResponse struct {
+
+//语音识别参数
+type ASRParams struct {
+	Format  string `json:"format"`  //语音的格式，pcm 或者 wav 或者 amr。不区分大小写
+	Rate    int    `json:"rate"`    //采样率，支持 8000 或者 16000
+	Channel int    `json:"channel"` //声道数，仅支持单声道，请填写固定值 1
+	Cuid    string `json:"cuid"`    //用户唯一标识，用来区分用户，计算UV值。建议填写能区分用户的机器 MAC 地址或 IMEI 码，长度为60字符以内
+	Token   string `json:"token"`   //开放平台获取到的开发者access_token
+	Lan     string `json:"lan"`     //语种选择，默认中文（zh）。 中文=zh、粤语=ct、英文=en，不区分大小写
+	Speech  string `json:"speech"`  //真实的语音数据 ，需要进行base64 编码。与len参数连一起使用
+	Len     int    `json:"len"`     //原始语音长度，单位字节
 }
 
 type AuthResponse struct {
-	Access_token  string `json:"access_token"`
+	AccessToken   string `json:"access_token"`
 	ExpireIn      string `json:"expire_in"`
 	RefreshToken  string `json:"refresh_token"`
 	Scope         string `json:"scope"`
@@ -62,16 +83,22 @@ func (da DefaultAuthorizer) Authorize(client *VoiceClient) error {
 	}
 	var result AuthResponse
 	if err := resp.ToJSON(&result); err != nil {
-		client.AccessToken = result.Access_token
+		return err
 	}
+	client.AccessToken = result.AccessToken
 	return nil
 }
 
 //TextToSpeech 将文字转换为语音
 func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
-	vc.auth()
+	if len(txt) >= 1024 {
+		return []byte{}, errors.New("文本长度必须小于1024字节")
+	}
+	if err := vc.auth(); err != nil {
+		return []byte{}, err
+	}
 	params := req.Param{
-		"tex":  "",             //必填	合成的文本，使用UTF-8编码，请注意文本长度必须小于1024字节
+		"tex":  txt,            //必填	合成的文本，使用UTF-8编码，请注意文本长度必须小于1024字节
 		"lan":  "zh",           //必填	语言选择,目前只有中英文混合模式，填写固定值zh
 		"tok":  vc.AccessToken, //必填	开放平台获取到的开发者access_token（见上面的“鉴权认证机制”段落）
 		"ctp":  "1",            //必填	客户端类型选择，web端填写固定值1
@@ -81,7 +108,7 @@ func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
 		"vol":  "5",            //选填	音量，取值0-15，默认为5中音量
 		"per":  "1",            //选填   发音人选择, 0为普通女声，1为普通男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女声
 	}
-	resp, err := req.Post(TSN_URL, params)
+	resp, err := req.Post(TTS_URL, params)
 	if err != nil {
 		return []byte{}, nil
 	}
@@ -97,27 +124,46 @@ func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
 		}
 		return respBody, nil
 	} else {
-		return []byte{}, errors.New(string(resp.ToString()))
+		respStr, err := resp.ToString()
+		if err != nil {
+			return []byte{}, err
+		}
+		return []byte{}, errors.New("调用服务失败：" + respStr)
 	}
 }
 
 //SpeechToText 将语音翻译成文字
-func (vc *VoiceClient) SpeechToText(path string) ([]string, error) {
-	vc.auth()
-	return []string{}, nil
+func (vc *VoiceClient) SpeechToText(ap ASRParams) ([]string, error) {
+	if ap.Len > 8*10*MB {
+		return []string{}, errors.New("文件大小不能超过10M")
+	}
+	if err := vc.auth(); err != nil {
+		return []string{}, err
+	}
+	resp, err := req.Post(ASR_URL, req.Header{
+		"Content-Type": "application/json",
+	}, req.BodyJSON(ap))
+	if err != nil {
+		return []string{}, err
+	}
+	var rs ASRResponse
+	if err := resp.ToJSON(&rs); err != nil {
+		return []string{}, err
+	}
+	return rs.Result, nil
 }
 
-func (vc *VoiceClient) auth() {
-	vc.Authorizer.Authorize(vc)
+func (vc *VoiceClient) auth() error {
+	return vc.Authorizer.Authorize(vc)
 }
 
 func (vc *VoiceClient) SetAuther(auth Authorizer) {
 	vc.Authorizer = auth
 }
 
-func NewVoiceClient(ApiKEY, secretKey string) *VoiceClient {
+func NewVoiceClient(ApiKey, secretKey string) *VoiceClient {
 	return &VoiceClient{
-		ClientID:     ApiKEY,
+		ClientID:     ApiKey,
 		ClientSecret: secretKey,
 		Authorizer:   DefaultAuthorizer{},
 	}
