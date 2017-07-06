@@ -23,6 +23,14 @@ func TestDefaultAuthorizer_Authorize(t *testing.T) {
 	t.Log("testing passed.")
 }
 
+func TestDefaultAuthorizer_Authorize_fail(t *testing.T) {
+	client := NewVoiceClient("", apiSecret)
+	if err := client.auth(); err != nil {
+		t.Log(err)
+	}
+	t.Log("testing passed.")
+}
+
 func TestVoiceClient_TextToSpeech(t *testing.T) {
 	client := NewVoiceClient(apiKey, apiSecret)
 	file, err := client.UseDefaultTTSConfig().TextToSpeech("你叫什么名字啊？")

@@ -108,8 +108,8 @@ func (da DefaultAuthorizer) Authorize(client *VoiceClient) error {
 	}
 	var rsSuccess AuthResponseSuccess
 	var rsFail AuthResponseFailed
-	if err := resp.ToJSON(&rsSuccess); err != nil {
-		if err := resp.ToJSON(&rsFail); err != nil {
+	if err := resp.ToJSON(&rsSuccess); err != nil || rsSuccess.AccessToken == "" { //json解析失败
+		if err := resp.ToJSON(&rsFail); err != nil || rsFail.ERROR == "" { //json解析失败
 			return errors.New("授权信息解析失败:" + err.Error())
 		}
 		return errors.New("授权失败:" + rsFail.ErrorDescription)
