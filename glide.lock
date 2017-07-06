@@ -1,0 +1,6 @@
+hash: 1a696f5234752eda464f85d7bd477b12084b54c77cabf252287af933f88f58b9
+updated: 2017-07-06T11:37:31.2494421+08:00
+imports:
+- name: github.com/imroc/req
+  version: 040f08ee8f42dbb5086587662d001cfd140c4e0b
+testImports: []

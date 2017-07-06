@@ -1,0 +1,4 @@
+package: dueros
+import:
+- package: github.com/imroc/req
+  version: v0.1.5
