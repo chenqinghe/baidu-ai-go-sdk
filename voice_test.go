@@ -8,8 +8,8 @@ import (
 	"testing"
 )
 
-var apiKey string = "tVPKdPqxKwWOM9vsukPzseoH"
-var apiSecret string = "VFusINaQ3YjDUC4GoIB1cENME9g2f4Gn"
+var apiKey string = "tVPKdPqxKwWOasdM9vsukPzseoHhk"
+var apiSecret string = "VFusINaQ3YjDUC4GoIB1casdENME9g2f4Gn"
 
 func TestDefaultAuthorizer_Authorize(t *testing.T) {
 	client := NewVoiceClient(apiKey, apiSecret)
