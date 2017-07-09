@@ -1,4 +1,4 @@
-# baidu-ai-go-sdk
+# BAIDU-AI-GO-SDK
 基于百度REST API封装的go语言sdk，提供简易友好的接口，让开发变得简单。
 
 # TODO LIST
@@ -12,4 +12,4 @@
 - [ ] 图像审核
 
 # LISENCE
-apache2 
+[Apache-2.0](https://github.com/chenqinghe/baidu-ai-go-sdk/blob/master/LICENSE) 
