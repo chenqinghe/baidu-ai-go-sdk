@@ -68,11 +68,6 @@ type ASRParams struct {
 	Len     int    `json:"len"`     //原始语音长度，单位字节
 }
 
-func (vc *VoiceClient) UseDefaultTTSConfig() *VoiceClient {
-	vc.TTSConfig = defaultTTSConfig
-	return vc
-}
-
 //TextToSpeech 语音合成，将文字转换为语音
 func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
 	if len(txt) >= 1024 {
@@ -151,6 +146,7 @@ func (vc *VoiceClient) SpeechToText(ap ASRParams) ([]string, error) {
 
 func NewVoiceClient(ApiKey, secretKey string) *VoiceClient {
 	return &VoiceClient{
-		Client: sdk.NewClient(ApiKey, secretKey),
+		Client:    sdk.NewClient(ApiKey, secretKey),
+		TTSConfig: defaultTTSConfig,
 	}
 }

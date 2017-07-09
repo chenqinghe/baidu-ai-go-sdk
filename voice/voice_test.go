@@ -8,8 +8,8 @@ import (
 	"testing"
 )
 
-var apiKey string = "tVPKdPqxKwWOM9vsukPzseoH"
-var apiSecret string = "VFusINaQ3YjDUC4GoIB1cENME9g2f4Gn"
+var apiKey string = "tVPKdPqxKwWOM9fdsvsukPzseoH"
+var apiSecret string = "VFusINaQ3YjDUC4GodsfsIB1cENME9g2f4Gn"
 
 func TestDefaultAuthorizer_Authorize(t *testing.T) {
 	client := NewVoiceClient(apiKey, apiSecret)
@@ -33,7 +33,7 @@ func TestDefaultAuthorizer_Authorize_fail(t *testing.T) {
 
 func TestVoiceClient_TextToSpeech(t *testing.T) {
 	client := NewVoiceClient(apiKey, apiSecret)
-	file, err := client.UseDefaultTTSConfig().TextToSpeech("你叫什么名字啊？")
+	file, err := client.TextToSpeech("你叫什么名字啊？")
 	if err != nil {
 		t.Fatal(err)
 	}
