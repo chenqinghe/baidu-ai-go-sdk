@@ -1,8 +1,15 @@
-# [百度AI服务go语言SDK帮助文档](http://help.opensource.chenqinghe.com/baidu-ai-services-go-sdk-help.html)
+# Installation
+```GO
+go get github.com/chenqinghe/baidu-ai-go-sdk/voice
+```
 
-## 语音服务
+#Usage
 
-### func NewVoiceCLient()*VoiceClient
-该函数
-
-http://help.opensource.chenqinghe.com/baidu-ai-services-go-sdk-help.html
+- 创建VoiceClient
+```GO
+    var apiKey,apiSecret string 
+	apiKey = "XXXXXXX"
+	apiSecret = "XXXXXXX"
+	client := NewVoiceClient(apiKey,apiSecret)
+```
+    
