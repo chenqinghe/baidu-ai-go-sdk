@@ -10,7 +10,7 @@ go get github.com/chenqinghe/baidu-ai-go-sdk/voice
     	var apiKey,apiSecret string 
 	apiKey = "XXXXXXX"
 	apiSecret = "XXXXXXX"
-	client := NewVoiceClient(apiKey,apiSecret)
+	client := voice.NewVoiceClient(apiKey,apiSecret)
 ```
 
 - 语音合成
