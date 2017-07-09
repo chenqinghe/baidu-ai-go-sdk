@@ -2,3 +2,5 @@ package: dueros
 import:
 - package: github.com/imroc/req
   version: v0.1.5
+- package: github.com/sirupsen/logrus
+  version: ~1.0.0

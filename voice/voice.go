@@ -9,6 +9,7 @@ import (
 
 	sdk "github.com/chenqinghe/baidu-ai-go-sdk/internal"
 	"github.com/imroc/req"
+	"math/rand"
 	"net"
 	"strconv"
 )
@@ -70,6 +71,7 @@ type ASRParams struct {
 
 //TextToSpeech 语音合成，将文字转换为语音
 func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
+
 	if len(txt) >= 1024 {
 		return []byte{}, ErrTextTooLong
 	}
@@ -84,6 +86,9 @@ func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
 		return []byte{}, err
 	}
 	mac := itfcs[0].HardwareAddr.String()
+	if mac == "" {
+		mac = randomStr(10)
+	}
 	params := req.Param{
 		"tex":  txt,                            //必填	合成的文本，使用UTF-8编码，请注意文本长度必须小于1024字节
 		"lan":  "zh",                           //必填	语言选择,目前只有中英文混合模式，填写固定值zh
@@ -149,4 +154,14 @@ func NewVoiceClient(ApiKey, secretKey string) *VoiceClient {
 		Client:    sdk.NewClient(ApiKey, secretKey),
 		TTSConfig: defaultTTSConfig,
 	}
+}
+
+func randomStr(length int) string {
+	var baseStr = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM0123456789"
+	var bt []byte = make([]byte, length)
+	for i := 0; i < length; i++ {
+		k := rand.Intn(62)
+		bt = append(bt, baseStr[k])
+	}
+	return string(bt)
 }
