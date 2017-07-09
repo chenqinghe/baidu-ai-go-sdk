@@ -1,4 +1,4 @@
-package dueros
+package voice
 
 import (
 	"encoding/base64"
@@ -8,12 +8,12 @@ import (
 	"testing"
 )
 
-var apiKey string = "tVPKdPqxKwWOasdM9vsukPzseoHhk"
-var apiSecret string = "VFusINaQ3YjDUC4GoIB1casdENME9g2f4Gn"
+var apiKey string = "tVPKdPqxKwWOM9vsukPzseoH"
+var apiSecret string = "VFusINaQ3YjDUC4GoIB1cENME9g2f4Gn"
 
 func TestDefaultAuthorizer_Authorize(t *testing.T) {
 	client := NewVoiceClient(apiKey, apiSecret)
-	if err := client.auth(); err != nil {
+	if err := client.Auth(); err != nil {
 		t.Fatal(err)
 	}
 	if client.AccessToken == "" {
@@ -25,7 +25,7 @@ func TestDefaultAuthorizer_Authorize(t *testing.T) {
 
 func TestDefaultAuthorizer_Authorize_fail(t *testing.T) {
 	client := NewVoiceClient("", apiSecret)
-	if err := client.auth(); err != nil {
+	if err := client.Auth(); err != nil {
 		t.Log(err)
 	}
 	t.Log("testing passed.")
