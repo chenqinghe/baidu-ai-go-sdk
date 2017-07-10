@@ -16,5 +16,18 @@
 - [ ] 驾驶证识别
 - [ ] 行驶证识别
 - [ ] 表格文字识别
+
+### 人脸识别
+
+### 语言处理基础技术
+
+### 理解与交互技术UNIT
+
+### 图像审核
+
+
+
+
+
 # LISENCE
 [Apache-2.0](https://github.com/chenqinghe/baidu-ai-go-sdk/blob/master/LICENSE) 
