@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-var apikey string = "nKesFdOqHYzKfdsfadsFMzVcvX4cfDU"
-var secretkey string = "2xTn6TGucUNsdafaggha6YUZoDOMeZWqYsKpop1n"
+var apikey string = "nKesFsdfgdOqHYzKFMzVcvdfX4cfDU"
+var secretkey string = "2xTn6TGucUNa6YfgfdUZoDOMeZWqYsKpop1n"
 
 func TestGeneralRecognizeBasic(t *testing.T) {
 	f, err := os.OpenFile("ocr.jpg", os.O_RDONLY, 0777)
