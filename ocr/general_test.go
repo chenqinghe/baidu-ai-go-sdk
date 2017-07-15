@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-var apikey string = "nKesFdOqHYzKFMzVasdcvX4cfDU"
-var secretkey string = "2xTn6TGucdffssUNa6YUZoDOMeZWqYsKpop1n"
+var apikey string = "nKesFdOqHYzKFMzVcvX4cfDU"
+var secretkey string = "2xTn6TGucUNa6YUZoDOMeZWqYsKpop1n"
 
 var client *OCRClient = NewOCRClient(apikey, secretkey)
 

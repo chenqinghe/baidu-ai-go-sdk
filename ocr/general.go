@@ -52,71 +52,61 @@ func NewOCRClient(apiKey, secretKey string) *OCRClient {
 //conf 请求参数
 func (oc *OCRClient) GeneralRecognizeBasic(img []byte, conf map[string]string) ([]byte, error) {
 	if err := oc.Auth(); err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 	encodedImgStr := base64.StdEncoding.EncodeToString(img)
 	conf["image"] = encodedImgStr
-	for key, value := range defaultGeneralBasicParams {
-		if _, ok := conf[key]; !ok {
-			conf[key] = value
-		}
-	}
+
+	conf = parseParams(defaultGeneralBasicParams, conf)
+
 	var url string = OCR_GENERAL_BASIC_URL + "?access_token=" + oc.AccessToken
-	resp, err := req.Post(url, req.Param(conf), req.Header{
-		"Content-Type": "application/x-www-form-urlencoded",
-	})
-	if err != nil {
-		return []byte{}, err
-	}
-	respByte, err := resp.ToBytes()
-	if err != nil {
-		return []byte{}, err
-	}
-	return respByte, nil
+
+	return doRequest(url, conf)
 }
 
 //GeneralRecognizeWithLocation 通用文字识别（含位置信息）
-func (oc *OCRClient) GeneralRecognizeWithLocation(img []byte, conf map[string]string) (rs []byte, err error) {
-	if err = oc.Auth(); err != nil {
-		return
+func (oc *OCRClient) GeneralRecognizeWithLocation(img []byte, conf map[string]string) ([]byte, error) {
+	if err := oc.Auth(); err != nil {
+		return nil, err
 	}
-
 	encodedImgStr := base64.StdEncoding.EncodeToString(img)
 	conf["image"] = encodedImgStr
-	for key, value := range defaultGeneralWithLocationParams {
-		if _, ok := conf[key]; !ok {
-			conf[key] = value
-		}
-	}
+	conf = parseParams(defaultGeneralWithLocationParams, conf)
 
 	var url string = OCR_GENERAL_WITH_LOCATION_URL + "?access_token=" + oc.AccessToken
-	resp, err := req.Post(url, req.Param(conf), req.Header{"Content-Type": "application/x-www-form-urlencoded"})
-	if err != nil {
-		return
-	}
-	rs, err = resp.ToBytes()
-	return
+
+	return doRequest(url, conf)
 
 }
 
 //GeneralRecognizeEnhanced 通用文字识别（含生僻字）
-func (oc *OCRClient) GeneralRecognizeEnhanced(img []byte, conf map[string]string) (rs []byte, err error) {
-	if err = oc.Auth(); err != nil {
-		return
+func (oc *OCRClient) GeneralRecognizeEnhanced(img []byte, conf map[string]string) ([]byte, error) {
+	if err := oc.Auth(); err != nil {
+		return nil, err
 	}
-
 	encodedImgStr := base64.StdEncoding.EncodeToString(img)
 	conf["image"] = encodedImgStr
 
-	for key, value := range defaultDeneralEnhancedParams {
-		if _, ok := conf[key]; !ok {
-			conf[key] = value
-		}
-
-	}
+	conf = parseParams(defaultDeneralEnhancedParams, conf)
 
 	url := OCR_GENERAL_ENHANCED_URL + "?access_token=" + oc.AccessToken
-	resp, err := req.Post(url, req.Param(conf), req.Header{"Content-Type": "application/x-www-form-urlencoded"})
+
+	return doRequest(url, conf)
+
+}
+
+func parseParams(def, need map[string]string) map[string]string {
+	for key, value := range def {
+		if _, ok := need[key]; !ok {
+			need[key] = value
+		}
+	}
+	return need
+}
+
+func doRequest(url string, params map[string]string) (rs []byte, err error) {
+
+	resp, err := req.Post(url, req.Param(params), req.Header{"Content-Type": "application/x-www-form-urlencoded"})
 	if err != nil {
 		return
 	}
