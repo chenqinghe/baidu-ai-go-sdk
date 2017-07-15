@@ -161,7 +161,7 @@ func randomStr(length int) string {
 	var bt []byte = make([]byte, length)
 	for i := 0; i < length; i++ {
 		k := rand.Intn(62)
-		bt = append(bt, baseStr[k])
+		bt[i] = baseStr[i]
 	}
 	return string(bt)
 }
