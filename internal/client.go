@@ -62,6 +62,9 @@ func (da DefaultAuthorizer) Authorize(client *Client) error {
 }
 
 func (client *Client) Auth() error {
+	if client.AccessToken != "" {
+		return nil
+	}
 	return client.Authorizer.Authorize(client)
 }
 
