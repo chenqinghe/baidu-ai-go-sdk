@@ -12,6 +12,7 @@ import (
 	"math/rand"
 	"net"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -24,8 +25,10 @@ const (
 	MB
 )
 
-var ErrNoTTSConfig = errors.New("No TTSConfig.please set TTSConfig correctlly first or call method UseDefaultTTSConfig")
-var ErrTextTooLong = errors.New("The input string is too long")
+var (
+	ErrNoTTSConfig = errors.New("No TTSConfig.please set TTSConfig correctlly first or call method UseDefaultTTSConfig")
+	ErrTextTooLong = errors.New("The input string is too long")
+)
 
 //VoiceClient 代表一个语音服务应用
 type VoiceClient struct {
@@ -143,7 +146,7 @@ func (vc *VoiceClient) SpeechToText(ap ASRParams) ([]string, error) {
 	if err := resp.ToJSON(&rs); err != nil {
 		return []string{}, err
 	}
-	if rs.ERRMSG != "success." || rs.ERRNO != 0 {
+	if !strings.Contains(rs.ERRMSG, "success") || rs.ERRNO != 0 {
 		return []string{}, errors.New("调用服务失败：" + rs.ERRMSG)
 	}
 	return rs.Result, nil
@@ -161,7 +164,7 @@ func randomStr(length int) string {
 	var bt []byte = make([]byte, length)
 	for i := 0; i < length; i++ {
 		k := rand.Intn(62)
-		bt[i] = baseStr[i]
+		bt[i] = baseStr[k]
 	}
 	return string(bt)
 }

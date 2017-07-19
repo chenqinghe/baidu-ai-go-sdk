@@ -11,13 +11,27 @@ const (
 )
 
 var (
-	defaultWebimgParams         = defaultDeneralEnhancedParams
-	defaultIdcardParams         = defaultWebimgParams
-	defaultBankcardParams       = defaultWebimgParams
-	defaultDriverLicenseParams  = defaultWebimgParams
-	defaultVehicleLicenseParams = defaultWebimgParams
-	defaultLicensePlateParams   = defaultWebimgParams
-	defaultFormParams           = defaultWebimgParams
+	defaultWebimgParams = defaultDeneralEnhancedParams
+	defaultIdcardParams = map[string]string{
+		"image":            "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+		"detect_direction": "false", //是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括: - true：检测朝向； - false：不检测朝向。
+		"id_card_side":     "front", //front：身份证正面；back：身份证背面
+		"detect_risk":      "false", //是否开启身份证风险类型(身份证复印件、临时身份证、身份证翻拍、修改过的身份证)功能，默认不开启，即：false。可选值:true-开启；false-不开启
+	}
+	defaultBankcardParams = map[string]string{
+		"image": "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	}
+	defaultDriverLicenseParams = map[string]string{
+		"image":            "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+		"detect_direction": "false", //是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括: - true：检测朝向； - false：不检测朝向。
+	}
+	defaultVehicleLicenseParams = map[string]string{
+		"image":            "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+		"detect_direction": "false", //是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括: - true：检测朝向； - false：不检测朝向。
+		"accuracy":         "",      //normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+	}
+	defaultLicensePlateParams = defaultBankcardParams
+	defaultFormParams         = defaultBankcardParams
 )
 
 func (oc *OCRClient) WebImageRecognize(img []byte, conf map[string]string) ([]byte, error) {
