@@ -1,6 +1,6 @@
 from golang:1.8.3
 
-COPY . /data
+COPY . /go/src/baidu-ai-go-sdk
 
-WORKDIR /data/ocr
+WORKDIR /go/src/baidu-ai-go-sdk
 RUN go test
