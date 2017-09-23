@@ -1,7 +1,7 @@
 # Baidu-ai-go-sdk   ![travis](https://travis-ci.org/chenqinghe/baidu-ai-go-sdk.svg?branch=master)
 基于百度REST API封装的go语言sdk，提供简易友好的接口，让开发变得简单。
 
-# TODO LIST
+# Todo list
 ### 百度语音
 - [x] 语音合成
 - [x] 语音识别
