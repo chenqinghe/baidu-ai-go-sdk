@@ -105,7 +105,7 @@ func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
 	}
 	resp, err := req.Post(TTS_URL, params)
 	if err != nil {
-		return []byte{}, nil
+		return []byte{}, err
 	}
 	respHeader := resp.Response().Header
 	contentType, ok := respHeader["Content-Type"]
@@ -115,7 +115,7 @@ func (vc *VoiceClient) TextToSpeech(txt string) ([]byte, error) {
 	if contentType[0] == "audio/mp3" {
 		respBody, err := ioutil.ReadAll(resp.Response().Body)
 		if err != nil {
-			return []byte{}, nil
+			return []byte{}, err
 		}
 		return respBody, nil
 	} else {
