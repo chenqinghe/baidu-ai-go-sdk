@@ -1,8 +1,6 @@
-hash: a8a06012543fd5e1409e956c81d5dfcee8b21cde98ce181de8f17bbc966d6ee4
-updated: 2017-07-09T22:51:54.3105678+08:00
+hash: f5e92b99ec5d8c66856f380bc8c9d56fd67f2c5f429f3352e791485472546b2c
+updated: 2017-09-23T13:28:09.3756544+08:00
 imports:
 - name: github.com/imroc/req
   version: 040f08ee8f42dbb5086587662d001cfd140c4e0b
-- name: github.com/sirupsen/logrus
-  version: 202f25545ea4cf9b191ff7f846df5d87c9382c2b
 testImports: []
