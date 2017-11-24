@@ -4,7 +4,7 @@ go:
 before_install:
   - go get github.com/Masterminds/glide
 install:
-  - glide install -v
+  - glide install
 script:
   - go build ./voice
   - go build ./ocr
