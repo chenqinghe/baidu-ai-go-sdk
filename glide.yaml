@@ -1,4 +1,4 @@
 package: github.com/chenqinghe/baidu-ai-go-sdk
 import:
 - package: github.com/imroc/req
-  version: 0.1.5
+  version: v0.1.5
