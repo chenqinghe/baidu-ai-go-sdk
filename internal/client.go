@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+
 	"github.com/imroc/req"
 )
 
@@ -37,8 +38,9 @@ type Authorizer interface {
 	Authorize(client *Client) error
 }
 
-type DefaultAuthorizer struct {
-}
+type DefaultAuthorizer struct{}
+
+type RestApiAuthorizer DefaultAuthorizer
 
 func (da DefaultAuthorizer) Authorize(client *Client) error {
 	resp, err := req.Post(VOICE_AUTH_URL, req.Param{

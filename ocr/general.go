@@ -2,6 +2,7 @@ package ocr
 
 import (
 	"encoding/base64"
+
 	sdk "github.com/chenqinghe/baidu-ai-go-sdk/internal"
 	"github.com/imroc/req"
 )
@@ -96,12 +97,12 @@ func (oc *OCRClient) GeneralRecognizeEnhanced(img []byte, conf map[string]string
 }
 
 func parseParams(def, need map[string]string) map[string]string {
-	for key, value := range def {
-		if _, ok := need[key]; !ok {
-			need[key] = value
+	for key, _ := range def {
+		if val, ok := need[key]; ok {
+			def[key] = val
 		}
 	}
-	return need
+	return def
 }
 
 func doRequest(url string, params map[string]string) (rs []byte, err error) {
