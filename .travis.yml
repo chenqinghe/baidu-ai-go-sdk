@@ -6,5 +6,4 @@ before_install:
 install:
   - glide install
 script:
-  - go test ./ocr
-  - go test ./voice
+  - go test ./...
