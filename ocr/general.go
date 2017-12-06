@@ -105,7 +105,7 @@ func parseParams(def, need map[string]string) map[string]string {
 	return def
 }
 
-func doRequest(url string, params map[string]string) (rs []byte, err error) {
+func doRequest(url string, params map[string]interface{}) (rs []byte, err error) {
 
 	resp, err := req.Post(url, req.Param(params), req.Header{"Content-Type": "application/x-www-form-urlencoded"})
 	if err != nil {
