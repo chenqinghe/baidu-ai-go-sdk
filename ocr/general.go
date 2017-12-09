@@ -3,14 +3,14 @@ package ocr
 import (
 	"encoding/base64"
 
-	sdk "github.com/chenqinghe/baidu-ai-go-sdk/internal"
+	"github.com/chenqinghe/baidu-ai-go-sdk"
 	"github.com/imroc/req"
 )
 
 const (
-	OCR_GENERAL_BASIC_URL         string = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
-	OCR_GENERAL_WITH_LOCATION_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
-	OCR_GENERAL_ENHANCED_URL             = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
+	OCR_GENERAL_BASIC_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
+	OCR_GENERAL_WITH_LOCATION_URL = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
+	OCR_GENERAL_ENHANCED_URL      = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
 )
 
 var defaultGeneralBasicParams = map[string]string{
@@ -39,12 +39,12 @@ var defaultDeneralEnhancedParams = map[string]string{
 }
 
 type OCRClient struct {
-	*sdk.Client
+	*gosdk.Client
 }
 
 func NewOCRClient(apiKey, secretKey string) *OCRClient {
 	return &OCRClient{
-		Client: sdk.NewClient(apiKey, secretKey),
+		Client: gosdk.NewClient(apiKey, secretKey),
 	}
 }
 

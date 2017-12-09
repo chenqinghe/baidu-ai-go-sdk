@@ -11,17 +11,20 @@ var (
 
 var client *VoiceClient
 
-func TestNewVoiceClient(t *testing.T) {
+func init() {
 	client = NewVoiceClient(apikey, secretkey)
+
 }
 
 func TestVoiceClient_TextToSpeech(t *testing.T) {
-	_, err := client.TextToSpeech("你好")
+	_, err := client.TextToSpeech("你好",
+		Speed(10),
+		Person(1),
+		Volume(10),
+		Cuid("1234567890"),
+	)
 	if err != nil {
+		t.Fatal(err)
 		t.Fail()
 	}
-}
-
-func TestVoiceClient_TextToSpeech2(t *testing.T) {
-	_,err:=client.SpeechToText()
 }

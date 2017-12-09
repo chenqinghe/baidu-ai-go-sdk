@@ -1,13 +1,13 @@
 package ocr
 
 const (
-	OCR_WEBIMAGE_URL       string = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
-	OCR_IDCARD_URL                = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
-	OCR_BANKCARD_URL              = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
-	OCR_DRIVERLICENSE_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license"
-	OCR_VEHICLELICENSE_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
-	OCR_LICENSEPLATE_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
-	OCR_FORM_URL                  = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
+	OCR_WEBIMAGE_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
+	OCR_IDCARD_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
+	OCR_BANKCARD_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
+	OCR_DRIVERLICENSE_URL  = "https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license"
+	OCR_VEHICLELICENSE_URL = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
+	OCR_LICENSEPLATE_URL   = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
+	OCR_FORM_URL           = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
 )
 
 var (
