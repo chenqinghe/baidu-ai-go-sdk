@@ -24,7 +24,7 @@ func TextToSpeech() {
 		log.Fatal(err)
 	}
 
-	f, err := os.OpenFile("hello.mp3", os.O_CREATE|os.O_WRONLY, 0777)
+	f, err := os.OpenFile("hello.mp3", os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

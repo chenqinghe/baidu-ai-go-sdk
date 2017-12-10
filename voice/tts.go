@@ -29,7 +29,8 @@ type TTSParams struct {
 	Person     int
 }
 
-type TTSParam func(*TTSParams)
+type TTSParam func(params *TTSParams)
+
 
 func Cuid(str string) TTSParam {
 	if len(str) > 60 {
