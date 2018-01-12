@@ -4,8 +4,6 @@ import (
 	"github.com/chenqinghe/baidu-ai-go-sdk/voice"
 	"log"
 	"os"
-	"io/ioutil"
-	"encoding/base64"
 	"fmt"
 )
 
@@ -43,30 +41,18 @@ func SpeechToText() {
 		log.Fatal(err)
 	}
 
-	f, err := os.OpenFile("hello.wav", os.O_RDONLY, 0666)
+	f, err := os.OpenFile("16k.pcm", os.O_RDONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fi, err1 := ioutil.ReadAll(f)
-	if err1 != nil {
-		log.Fatal(err1)
-	}
-	afterBase64Str := base64.StdEncoding.EncodeToString(fi)
-	fiLen := len(fi)
-	param := voice.ASRParams{
-		Format: "wav",
-		Rate: 16000,
-		Channel: 1,
-		Cuid: "12312312112", 
-		Token: client.AccessToken,
-		Lan: "zh",
-		Speech: afterBase64Str,
-		Len: fiLen,
-	}
-	rs, err2 := client.SpeechToText(param)
-	if err2 != nil {
-		log.Fatal(err2)
+	
+	rs, err := client.SpeechToText(
+		f,
+		voice.Format("pcm"),
+		voice.Channel(1),
+		)
+	if err != nil {
+		log.Fatal(err)
 	}
 	fmt.Println(rs)
 }
