@@ -7,7 +7,9 @@ import (
 
 	"io/ioutil"
 
-	"github.com/chenqinghe/baidu-ai-go-sdk"
+	"net"
+
+	"encoding/json"
 	"github.com/imroc/req"
 )
 
@@ -18,28 +20,18 @@ var (
 )
 
 type TTSParams struct {
-	Text       string
-	Token      string
-	Cuid       string
-	ClientType int
-	Language   string
-	Speed      int
-	Pitch      int
-	Volume     int
-	Person     int
+	Text       string `json:"tex"`
+	Token      string `json:"tok"`
+	Cuid       string `json:"cuid"`
+	ClientType int    `json:"ctp"`
+	Language   string `json:"lan"`
+	Speed      int    `json:"spd"`
+	Pitch      int    `json:"pit"`
+	Volume     int    `json:"vol"`
+	Person     int    `json:"per"`
 }
 
 type TTSParam func(params *TTSParams)
-
-
-func Cuid(str string) TTSParam {
-	if len(str) > 60 {
-		str = string(str[:60])
-	}
-	return func(p *TTSParams) {
-		p.Cuid = str
-	}
-}
 
 func Speed(spd int) TTSParam {
 	if spd > 9 {
@@ -96,10 +88,18 @@ func (vc *VoiceClient) TextToSpeech(txt string, params ...TTSParam) ([]byte, err
 		return nil, err
 	}
 
+	var cuid string
+	netitfs, err := net.Interfaces()
+	if err != nil {
+		cuid = "anonymous"
+	} else {
+		cuid = netitfs[0].HardwareAddr.String()
+	}
+
 	ttsparams := &TTSParams{
 		Text:       txt,
 		Token:      vc.AccessToken,
-		Cuid:       "as",
+		Cuid:       cuid,
 		ClientType: 1,
 		Language:   "zh",
 		Speed:      5,
@@ -112,10 +112,22 @@ func (vc *VoiceClient) TextToSpeech(txt string, params ...TTSParam) ([]byte, err
 		param(ttsparams)
 	}
 
-	resp, err := req.Post(TTS_URL, req.Param(gosdk.StructToMap(*ttsparams)))
+	t, err := json.Marshal(ttsparams)
+	if err != nil {
+		return nil, errors.New("serialize failed: " + err.Error())
+	}
+	var p  = req.Param{}
+	if err := json.Unmarshal(t, &p); err != nil {
+		return nil, err
+	}
+
+	resp, err := req.Post(TTS_URL, p)
 	if err != nil {
 		return nil, err
 	}
+	
+	//通过Content-Type的头部来确定是否服务端合成成功。
+	//http://ai.baidu.com/docs#/TTS-API/top
 	respHeader := resp.Response().Header
 	contentType, ok := respHeader["Content-Type"]
 	if !ok {

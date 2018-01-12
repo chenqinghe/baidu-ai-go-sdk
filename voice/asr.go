@@ -3,11 +3,13 @@ package voice
 import (
 	"encoding/base64"
 	"errors"
-	"github.com/imroc/req"
 	"io"
 	"io/ioutil"
+
 	"net"
-	"strings"
+
+	"fmt"
+	"github.com/imroc/req"
 )
 
 const ASR_URL = "http://vop.baidu.com/server_api"
@@ -60,15 +62,6 @@ func Channel(c int) ASRParam {
 	}
 }
 
-func Cuid(cuid string) ASRParam {
-	if len(cuid) > 60 {
-		cuid = string(cuid[:60])
-	}
-	return func(params *ASRParams) {
-		params.Cuid = cuid
-	}
-}
-
 func Language(lang string) ASRParam {
 	if lang != "zh" && lang != "ct" && lang != "en" {
 		lang = "zh"
@@ -79,7 +72,6 @@ func Language(lang string) ASRParam {
 }
 
 ////SpeechToText 语音识别，将语音翻译成文字
-
 func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]string, error) {
 	content, err := ioutil.ReadAll(reader)
 	if err != nil {
@@ -91,11 +83,19 @@ func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]str
 
 	spch := base64.StdEncoding.EncodeToString(content)
 
+	var cuid string
+	netitfs, err := net.Interfaces()
+	if err != nil {
+		cuid = "anonymous"
+	} else {
+		cuid = netitfs[0].HardwareAddr.String()
+	}
+
 	asrParams := &ASRParams{
 		Format:   "pcm",
 		Rate:     8000,
 		Channel:  1,
-		Cuid:     "anonymous",
+		Cuid:     cuid,
 		Token:    vc.AccessToken,
 		Language: "zh",
 		Speech:   spch,
@@ -115,13 +115,15 @@ func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]str
 		return nil, err
 	}
 
+	fmt.Println(resp.String())
+
 	var asrResponse *ASRResponse
 	if err := resp.ToJSON(asrResponse); err != nil {
 		return nil, err
 	}
 
 	if asrResponse.ERRNO != 0 {
-		return nil, errors.New("调用服务失败：" + rs.ERRMSG)
+		return nil, errors.New("调用服务失败：" + asrResponse.ERRMSG)
 	}
 
 	return asrResponse.Result, nil

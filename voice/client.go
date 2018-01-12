@@ -3,7 +3,7 @@ package voice
 import "github.com/chenqinghe/baidu-ai-go-sdk"
 
 const (
-	B = 1 << 10 * iota
+	B = 1 << (10 * iota)
 	KB
 	MB
 	GB
