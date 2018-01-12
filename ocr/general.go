@@ -51,7 +51,7 @@ func NewOCRClient(apiKey, secretKey string) *OCRClient {
 //GeneralRecognizeBasic 通用文字识别
 //img 图片二进制数据
 //conf 请求参数
-func (oc *OCRClient) GeneralRecognizeBasic(img []byte, conf map[string]string) ([]byte, error) {
+func (oc *OCRClient) GeneralRecognizeBasic(img []byte, conf map[string]interface{}) ([]byte, error) {
 	if err := oc.Auth(); err != nil {
 		return nil, err
 	}
@@ -107,11 +107,13 @@ func parseParams(def, need map[string]string) map[string]string {
 
 func doRequest(url string, params map[string]interface{}) (rs []byte, err error) {
 
-	resp, err := req.Post(url, req.Param(params), req.Header{"Content-Type": "application/x-www-form-urlencoded"})
+	header := req.Header{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	resp, err := req.Post(url, req.Param(params), header)
 	if err != nil {
 		return
 	}
-	rs, err = resp.ToBytes()
-	return
-
+	return resp.ToBytes()
 }
