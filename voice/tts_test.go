@@ -16,7 +16,7 @@ func init() {
 }
 
 func TestVoiceClient_TextToSpeech(t *testing.T) {
-	_, err := client.TextToSpeech(
+	res, err := client.TextToSpeech(
 		"你好",
 		Speed(10),
 		Person(1),
@@ -26,4 +26,5 @@ func TestVoiceClient_TextToSpeech(t *testing.T) {
 		t.Fatal(err)
 		t.Fail()
 	}
+	t.Log(res)
 }
