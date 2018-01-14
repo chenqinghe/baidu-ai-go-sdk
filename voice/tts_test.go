@@ -13,15 +13,14 @@ var client *VoiceClient
 
 func init() {
 	client = NewVoiceClient(apikey, secretkey)
-
 }
 
 func TestVoiceClient_TextToSpeech(t *testing.T) {
-	_, err := client.TextToSpeech("你好",
+	_, err := client.TextToSpeech(
+		"你好",
 		Speed(10),
 		Person(1),
 		Volume(10),
-		Cuid("1234567890"),
 	)
 	if err != nil {
 		t.Fatal(err)
