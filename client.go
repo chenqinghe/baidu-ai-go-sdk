@@ -1,4 +1,4 @@
-package internal
+package gosdk
 
 import (
 	"errors"
@@ -6,7 +6,14 @@ import (
 	"github.com/imroc/req"
 )
 
-const VOICE_AUTH_URL string = "https://openapi.baidu.com/oauth/2.0/token"
+const VOICE_AUTH_URL = "https://openapi.baidu.com/oauth/2.0/token"
+
+//Authorizer 用于设置access_token
+//可以通过RESTFul api的方式从百度方获取
+//有效期为一个月，可以存至数据库中然后从数据库中获取
+type Authorizer interface {
+	Authorize(*Client) error
+}
 
 type Client struct {
 	ClientID     string
@@ -31,16 +38,7 @@ type AuthResponseFailed struct {
 	ErrorDescription string `json:"error_description"` //错误描述信息，帮助理解和解决发生的错误。
 }
 
-//Authorizer 用于设置access_token
-//可以通过RESTFul api的方式从百度方获取
-//有效期为一个月，可以存至数据库中然后从数据库中获取
-type Authorizer interface {
-	Authorize(client *Client) error
-}
-
 type DefaultAuthorizer struct{}
-
-type RestApiAuthorizer DefaultAuthorizer
 
 func (da DefaultAuthorizer) Authorize(client *Client) error {
 	resp, err := req.Post(VOICE_AUTH_URL, req.Param{
@@ -67,7 +65,11 @@ func (client *Client) Auth() error {
 	if client.AccessToken != "" {
 		return nil
 	}
-	return client.Authorizer.Authorize(client)
+
+	if err := client.Authorizer.Authorize(client); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (client *Client) SetAuther(auth Authorizer) {
