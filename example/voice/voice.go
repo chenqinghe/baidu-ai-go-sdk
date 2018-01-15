@@ -1,17 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"github.com/chenqinghe/baidu-ai-go-sdk/voice"
 	"log"
 	"os"
-	"fmt"
 )
 
 const (
 	// This Api Key and Api Secret is just for example,
 	// you should get your own first.
-	APIKEY = "5RijeBzVjQ82uPx8gxGGfeNXlfRt7yH6"
-	APISECRET = "keiyq3oKrkYsSPUcrf0gtRKneeTxjuqV"
+	APIKEY    = "MDNsII2jkUtbF729GQOZt7FS"
+	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
 )
 
 // Voice Composition
@@ -34,7 +34,7 @@ func TextToSpeech() {
 
 // Voice Recognition
 // ATTENTION: the .wav file must be 8k or 16k rate with single(mono) channel.
-// FYI: you can use QuickTime to record voice and Fission converting to .wav 
+// FYI: you can use QuickTime to record voice and Fission converting to .wav
 func SpeechToText() {
 	client := voice.NewVoiceClient(APIKEY, APISECRET)
 	if err := client.Auth(); err != nil {
@@ -45,12 +45,12 @@ func SpeechToText() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	rs, err := client.SpeechToText(
 		f,
 		voice.Format("pcm"),
 		voice.Channel(1),
-		)
+	)
 	if err != nil {
 		log.Fatal(err)
 	}

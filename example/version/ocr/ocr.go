@@ -9,8 +9,8 @@ import (
 const (
 	// This Api Key and Api Secret is just for example,
 	// you should get your own first.
-	APIKEY    = "5RijeBzVjQ82uPx8gxGGfeNXlfRt7yH6"
-	APISECRET = "keiyq3oKrkYsSPUcrf0gtRKneeTxjuqV"
+	APIKEY    = "MDNsII2jkUtbF729GQOZt7FS"
+	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
 )
 
 func main() {
