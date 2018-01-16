@@ -1,10 +1,8 @@
 package ocr
 
 import (
-	"encoding/base64"
+	"errors"
 	"github.com/chenqinghe/baidu-ai-go-sdk"
-	"io"
-	"io/ioutil"
 )
 
 const (
@@ -34,70 +32,70 @@ func NewOCRClient(apiKey, secretKey string) *OCRClient {
 }
 
 //GeneralRecognizeBasic 通用文字识别
-func (oc *OCRClient) GeneralRecognizeBasic(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
+func (oc *OCRClient) GeneralRecognizeBasic(image *Image, params ...RequestParam) ([]byte, error) {
 
-	return oc.ocr(imageReader, OCR_GENERAL_BASIC_URL, defaultGeneralBasicParams, params...)
+	return oc.ocr(image, OCR_GENERAL_BASIC_URL, defaultGeneralBasicParams, params...)
 
 }
 
 //GeneralRecognizeWithLocation 通用文字识别（含位置信息）
-func (oc *OCRClient) GeneralRecognizeWithLocation(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
+func (oc *OCRClient) GeneralRecognizeWithLocation(image *Image, params ...RequestParam) ([]byte, error) {
 
-	return oc.ocr(imageReader, OCR_GENERAL_WITH_LOCATION_URL, defaultGeneralWithLocationParams, params...)
+	return oc.ocr(image, OCR_GENERAL_WITH_LOCATION_URL, defaultGeneralWithLocationParams, params...)
 
 }
 
 //GeneralRecognizeEnhanced 通用文字识别（含生僻字）
-func (oc *OCRClient) GeneralRecognizeEnhanced(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
+func (oc *OCRClient) GeneralRecognizeEnhanced(image *Image, params ...RequestParam) ([]byte, error) {
 
-	return oc.ocr(imageReader, OCR_GENERAL_ENHANCED_URL, defaultDeneralEnhancedParams, params...)
-
-}
-
-func (oc *OCRClient) WebImageRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
-
-	return oc.ocr(imageReader, OCR_WEBIMAGE_URL, defaultWebimgParams, params...)
+	return oc.ocr(image, OCR_GENERAL_ENHANCED_URL, defaultDeneralEnhancedParams, params...)
 
 }
 
-func (oc *OCRClient) IdcardRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
+func (oc *OCRClient) WebImageRecognize(image *Image, params ...RequestParam) ([]byte, error) {
 
-	return oc.ocr(imageReader, OCR_IDCARD_URL, defaultIdcardParams, params...)
-
-}
-
-func (oc *OCRClient) BankcardRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
-
-	return oc.ocr(imageReader, OCR_BANKCARD_URL, defaultBankcardParams, params...)
+	return oc.ocr(image, OCR_WEBIMAGE_URL, defaultWebimgParams, params...)
 
 }
 
-func (oc *OCRClient) DriverLicenseRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
+func (oc *OCRClient) IdcardRecognize(image *Image, params ...RequestParam) ([]byte, error) {
 
-	return oc.ocr(imageReader, OCR_DRIVERLICENSE_URL, defaultDriverLicenseParams, params...)
-
-}
-
-func (oc *OCRClient) VehicleLicenseRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
-
-	return oc.ocr(imageReader, OCR_VEHICLELICENSE_URL, defaultVehicleLicenseParams, params...)
+	return oc.ocr(image, OCR_IDCARD_URL, defaultIdcardParams, params...)
 
 }
 
-func (oc *OCRClient) LicensePlateRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
+func (oc *OCRClient) BankcardRecognize(image *Image, params ...RequestParam) ([]byte, error) {
 
-	return oc.ocr(imageReader, OCR_LICENSEPLATE_URL, defaultLicensePlateParams, params...)
-
-}
-
-func (oc *OCRClient) FromdataRecognize(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
-
-	return oc.ocr(imageReader, OCR_FORM_URL, defaultFormParams, params...)
+	return oc.ocr(image, OCR_BANKCARD_URL, defaultBankcardParams, params...)
 
 }
 
-func (oc *OCRClient) ocr(imageReader io.Reader, url string, def map[string]interface{}, params ...RequestParam) ([]byte, error) {
-	requestParams, err := parseRequestParam(imageReader, def, params...)
+func (oc *OCRClient) DriverLicenseRecognize(image *Image, params ...RequestParam) ([]byte, error) {
+
+	return oc.ocr(image, OCR_DRIVERLICENSE_URL, defaultDriverLicenseParams, params...)
+
+}
+
+func (oc *OCRClient) VehicleLicenseRecognize(image *Image, params ...RequestParam) ([]byte, error) {
+
+	return oc.ocr(image, OCR_VEHICLELICENSE_URL, defaultVehicleLicenseParams, params...)
+
+}
+
+func (oc *OCRClient) LicensePlateRecognize(image *Image, params ...RequestParam) ([]byte, error) {
+
+	return oc.ocr(image, OCR_LICENSEPLATE_URL, defaultLicensePlateParams, params...)
+
+}
+
+func (oc *OCRClient) FromdataRecognize(image *Image, params ...RequestParam) ([]byte, error) {
+
+	return oc.ocr(image, OCR_FORM_URL, defaultFormParams, params...)
+
+}
+
+func (oc *OCRClient) ocr(image *Image, url string, def map[string]interface{}, params ...RequestParam) ([]byte, error) {
+	requestParams, err := parseRequestParam(image, def, params...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,15 +103,21 @@ func (oc *OCRClient) ocr(imageReader io.Reader, url string, def map[string]inter
 	return oc.doRequest(url, requestParams)
 }
 
-func parseRequestParam(imageReader io.Reader, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
+func parseRequestParam(image *Image, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
 
-	imageBytes, err := ioutil.ReadAll(imageReader)
-	if err != nil {
-		return nil, err
+	if image.Reader == nil {
+		if image.Url == "" {
+			return nil, errors.New("image source is empty")
+		} else {
+			def["url"] = image.Url
+		}
+	} else {
+		base64Str, err := image.Base64()
+		if err != nil {
+			return nil, err
+		}
+		def["image"] = base64Str
 	}
-	imageBase64Str := base64.StdEncoding.EncodeToString(imageBytes)
-
-	def["image"] = imageBase64Str
 
 	for _, fn := range params {
 		fn(def)
