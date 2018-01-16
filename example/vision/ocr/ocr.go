@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/chenqinghe/baidu-ai-go-sdk/version/ocr"
+	"github.com/chenqinghe/baidu-ai-go-sdk/vision/ocr"
 	"os"
 )
 

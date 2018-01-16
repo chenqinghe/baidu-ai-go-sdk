@@ -34,8 +34,6 @@ func NewOCRClient(apiKey, secretKey string) *OCRClient {
 }
 
 //GeneralRecognizeBasic 通用文字识别
-//img 图片二进制数据
-//conf 请求参数
 func (oc *OCRClient) GeneralRecognizeBasic(imageReader io.Reader, params ...RequestParam) ([]byte, error) {
 
 	return oc.ocr(imageReader, OCR_GENERAL_BASIC_URL, defaultGeneralBasicParams, params...)
