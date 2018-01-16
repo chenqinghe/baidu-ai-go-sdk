@@ -26,5 +26,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(rs))
+
+	fmt.Println(rs.ToString())
 }

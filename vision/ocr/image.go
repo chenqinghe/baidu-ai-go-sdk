@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	MAX_SIZE = 4096
-	MIN_SIZE = 15
+	MaxSize = 4096
+	MinSize = 15
 )
 
 type Image struct {
@@ -46,7 +46,7 @@ func FromFile(file string) (*Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	if size.Height > MAX_SIZE || size.Height < MIN_SIZE || size.Width > MAX_SIZE || size.Width < MIN_SIZE {
+	if size.Height > MaxSize || size.Height < MinSize || size.Width > MaxSize || size.Width < MinSize {
 		return nil, errors.New("image size is invalid")
 	}
 
@@ -78,7 +78,7 @@ func FromReader(reader io.Reader) (*Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	if size.Height > MAX_SIZE || size.Height < MIN_SIZE || size.Width > MAX_SIZE || size.Width < MIN_SIZE {
+	if size.Height > MaxSize || size.Height < MinSize || size.Width > MaxSize || size.Width < MinSize {
 		return nil, errors.New("image size is invalid")
 	}
 
@@ -104,7 +104,7 @@ func FromBytes(bts []byte) (*Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	if size.Height > MAX_SIZE || size.Height < MIN_SIZE || size.Width > MAX_SIZE || size.Width < MIN_SIZE {
+	if size.Height > MaxSize || size.Height < MinSize || size.Width > MaxSize || size.Width < MinSize {
 		return nil, errors.New("image size is invalid")
 	}
 
