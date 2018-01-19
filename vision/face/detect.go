@@ -27,7 +27,11 @@ func (fc *FaceClient) DetectAndAnalysis(image *vision.Image, options map[string]
 	}
 	options["image"] = base64Str
 
-	resp, err := req.Post(url, req.Param(options))
+	header := req.Header{
+		"Content-Type": "application/x-www-form-urlencoded",
+	}
+
+	resp, err := req.Post(url, req.Param(options), header)
 	if err != nil {
 		return nil, err
 	}

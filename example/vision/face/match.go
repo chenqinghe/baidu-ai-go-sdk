@@ -6,14 +6,7 @@ import (
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision/face"
 )
 
-const (
-	// This Api Key and Api Secret is just for example,
-	// you should get your own first.
-	APIKEY    = "MDNsII2jkUtbF729GQOZt7FS"
-	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
-)
-
-func main() {
+func Match() {
 	client := face.NewFaceClient(APIKEY, APISECRET)
 
 	rs, err := client.Match(
@@ -30,5 +23,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(rs.Dump())
+	fmt.Println(rs.ToString())
 }

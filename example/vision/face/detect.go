@@ -6,14 +6,7 @@ import (
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision/face"
 )
 
-const (
-	// This Api Key and Api Secret is just for example,
-	// you should get your own first.
-	APIKEY    = "MDNsII2jkUtbF729GQOZt7FS"
-	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
-)
-
-func main() {
+func DetectAndAnalysis() {
 	client := face.NewFaceClient(APIKEY, APISECRET)
 	options := map[string]interface{}{
 		"max_face_num": 10,
