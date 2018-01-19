@@ -1,0 +1,30 @@
+package main
+
+import (
+	"fmt"
+	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
+	"github.com/chenqinghe/baidu-ai-go-sdk/vision/face"
+)
+
+const (
+	// This Api Key and Api Secret is just for example,
+	// you should get your own first.
+	APIKEY    = "MDNsII2jkUtbF729GQOZt7FS"
+	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
+)
+
+func main() {
+	client := face.NewFaceClient(APIKEY, APISECRET)
+	options := map[string]interface{}{
+		"max_face_num": 10,
+		"face_fields":  "age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities",
+	}
+	rs, err := client.DetectAndAnalysis(
+		vision.MustFromFile("face.jpg"),
+		options,
+	)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(rs.ToString())
+}

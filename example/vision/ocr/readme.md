@@ -34,3 +34,19 @@ if err != nil {
 fmt.Println(rs.ToString())
 
 ```
+
+- 通用文字识别（高精度版）
+
+```Go
+resp, err := client.GeneralRecognizeEnhanced(
+		ocr.MustFromFile("ocr.jpg"),
+		ocr.DetectDirection(),
+		ocr.DetectLanguage(),
+		ocr.LanguageType("CHN_ENG"),
+	)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resp.ToString())
+
+```

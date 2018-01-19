@@ -1,4 +1,4 @@
-package ocr
+package vision
 
 import (
 	"bytes"

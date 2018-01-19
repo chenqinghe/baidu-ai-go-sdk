@@ -2,7 +2,7 @@ package ocr
 
 import (
 	"errors"
-	"github.com/chenqinghe/baidu-ai-go-sdk"
+	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 )
 
 const (
@@ -21,19 +21,9 @@ const (
 	OCR_FORM_URL           = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
 )
 
-type OCRClient struct {
-	*gosdk.Client
-}
-
-func NewOCRClient(apiKey, secretKey string) *OCRClient {
-	return &OCRClient{
-		Client: gosdk.NewClient(apiKey, secretKey),
-	}
-}
-
 //GeneralRecognizeBasic 通用文字识别
 //识别图片中的文字信息
-func (oc *OCRClient) GeneralRecognizeBasic(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) GeneralRecognizeBasic(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_GENERAL_BASIC_URL, defaultGeneralBasicParams, params...)
 
@@ -41,7 +31,7 @@ func (oc *OCRClient) GeneralRecognizeBasic(image *Image, params ...RequestParam)
 
 //GeneralRecognizeWithLocation 通用文字识别（含位置信息）
 //识别图片中的文字信息（包含文字区域的坐标信息）
-func (oc *OCRClient) GeneralRecognizeWithLocation(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) GeneralRecognizeWithLocation(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_GENERAL_WITH_LOCATION_URL, defaultGeneralWithLocationParams, params...)
 
@@ -49,7 +39,7 @@ func (oc *OCRClient) GeneralRecognizeWithLocation(image *Image, params ...Reques
 
 //GeneralRecognizeEnhanced 通用文字识别（含生僻字）
 //识别图片中的文字信息（包含对常见字和生僻字的识别）
-func (oc *OCRClient) GeneralRecognizeEnhanced(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) GeneralRecognizeEnhanced(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_GENERAL_ENHANCED_URL, defaultDeneralEnhancedParams, params...)
 
@@ -57,7 +47,7 @@ func (oc *OCRClient) GeneralRecognizeEnhanced(image *Image, params ...RequestPar
 
 //WebImageRecognize 网络图片识别
 //识别一些网络上背景复杂，特殊字体的文字
-func (oc *OCRClient) WebImageRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) WebImageRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_WEBIMAGE_URL, defaultWebimgParams, params...)
 
@@ -65,7 +55,7 @@ func (oc *OCRClient) WebImageRecognize(image *Image, params ...RequestParam) (*O
 
 //IdCardRecognize 身份证识别
 //识别身份证正反面的文字信息
-func (oc *OCRClient) IdCardRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) IdCardRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_IDCARD_URL, defaultIdcardParams, params...)
 
@@ -73,7 +63,7 @@ func (oc *OCRClient) IdCardRecognize(image *Image, params ...RequestParam) (*OCR
 
 //BankcardRecognize 银行卡识别
 //识别银行卡的卡号并返回发卡行和卡片性质信息
-func (oc *OCRClient) BankcardRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) BankcardRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_BANKCARD_URL, defaultBankcardParams, params...)
 
@@ -81,7 +71,7 @@ func (oc *OCRClient) BankcardRecognize(image *Image, params ...RequestParam) (*O
 
 //DriverLicenseRecognize 驾驶证识别
 //识别机动车驾驶证所有关键字段
-func (oc *OCRClient) DriverLicenseRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) DriverLicenseRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_DRIVERLICENSE_URL, defaultDriverLicenseParams, params...)
 
@@ -89,7 +79,7 @@ func (oc *OCRClient) DriverLicenseRecognize(image *Image, params ...RequestParam
 
 //VehicleLicenseRecognize 行驶证识别
 //识别机动车行驶证所有关键字段
-func (oc *OCRClient) VehicleLicenseRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) VehicleLicenseRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_VEHICLELICENSE_URL, defaultVehicleLicenseParams, params...)
 
@@ -97,7 +87,7 @@ func (oc *OCRClient) VehicleLicenseRecognize(image *Image, params ...RequestPara
 
 //LicensePlateRecognize 车牌识别
 //对小客车的车牌进行识别
-func (oc *OCRClient) LicensePlateRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) LicensePlateRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_LICENSEPLATE_URL, defaultLicensePlateParams, params...)
 
@@ -105,7 +95,7 @@ func (oc *OCRClient) LicensePlateRecognize(image *Image, params ...RequestParam)
 
 //FormDataRecognize 表格文字识别
 //自动识别表格线及表格内容，结构化输出表头、表尾及每个单元格的文字内容
-func (oc *OCRClient) FormDataRecognize(image *Image, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) FormDataRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_FORM_URL, defaultFormParams, params...)
 
@@ -117,7 +107,7 @@ func (oc *OCRClient) FormDataRecognize(image *Image, params ...RequestParam) (*O
 
 //TODO:自定义模板文字识别
 
-func (oc *OCRClient) ocr(image *Image, url string, def map[string]interface{}, params ...RequestParam) (*OCRResponse, error) {
+func (oc *OCRClient) ocr(image *vision.Image, url string, def map[string]interface{}, params ...RequestParam) (*OCRResponse, error) {
 	requestParams, err := parseRequestParam(image, def, params...)
 	if err != nil {
 		return nil, err
@@ -126,7 +116,7 @@ func (oc *OCRClient) ocr(image *Image, url string, def map[string]interface{}, p
 	return oc.doRequest(url, requestParams)
 }
 
-func parseRequestParam(image *Image, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
+func parseRequestParam(image *vision.Image, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
 
 	if image.Reader == nil {
 		if image.Url == "" {

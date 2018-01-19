@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision/ocr"
 )
 
@@ -12,12 +13,20 @@ const (
 	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
 )
 
+var client *ocr.OCRClient
+
+func init() {
+	client = ocr.NewOCRClient(APIKEY, APISECRET)
+}
+
 func main() {
+	GeneralRecognizeBasic()
+	GeneralRecognizeEnhanced()
+}
 
-	client := ocr.NewOCRClient(APIKEY, APISECRET)
-
+func GeneralRecognizeBasic() {
 	rs, err := client.GeneralRecognizeBasic(
-		ocr.MustFromFile("ocr.jpg"),
+		vision.MustFromFile("ocr.jpg"),
 		ocr.DetectDirection(),       //是否检测图像朝向，默认不检测
 		ocr.DetectLanguage(),        //是否检测语言，默认不检测。
 		ocr.LanguageType("CHN_ENG"), //识别语言类型，默认为CHN_ENG。
@@ -28,4 +37,19 @@ func main() {
 	}
 
 	fmt.Println(rs.ToString())
+}
+
+func GeneralRecognizeEnhanced() {
+
+	resp, err := client.GeneralRecognizeEnhanced(
+		vision.MustFromFile("ocr.jpg"),
+		ocr.DetectDirection(),
+		ocr.DetectLanguage(),
+		ocr.LanguageType("CHN_ENG"),
+	)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resp.ToString())
+
 }
