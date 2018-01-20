@@ -22,6 +22,5 @@ func Match() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Println(rs.ToString())
 }

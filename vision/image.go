@@ -42,7 +42,7 @@ func FromFile(file string) (*Image, error) {
 		return nil, err
 	}
 
-	size, err := getImageSize(bytes.NewBuffer(imageContent))
+	size, err := getImageSize(bytes.NewReader(imageContent))
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func FromFile(file string) (*Image, error) {
 		return nil, errors.New("image size is invalid")
 	}
 
-	reader := bytes.NewBuffer(imageContent)
+	reader := bytes.NewReader(imageContent)
 
 	return &Image{
 		Reader: reader,
