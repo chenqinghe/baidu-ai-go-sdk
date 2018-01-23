@@ -21,7 +21,7 @@ func (fc *FaceClient) DetectAndAnalysis(image *vision.Image, options map[string]
 
 	url := FACE_DETECT_URL + "?access_token=" + fc.AccessToken
 
-	base64Str, err := image.Base64()
+	base64Str, err := image.Base64Encode()
 	if err != nil {
 		return nil, err
 	}

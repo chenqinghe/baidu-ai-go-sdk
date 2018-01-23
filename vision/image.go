@@ -149,7 +149,7 @@ func MustFromUrl(link string) *Image {
 	return img
 }
 
-func (img *Image) Base64() (string, error) {
+func (img *Image) Base64Encode() (string, error) {
 
 	if img.Reader == nil {
 		if img.Url != "" {

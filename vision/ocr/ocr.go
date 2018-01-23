@@ -125,7 +125,7 @@ func parseRequestParam(image *vision.Image, def map[string]interface{}, params .
 			def["url"] = image.Url
 		}
 	} else {
-		base64Str, err := image.Base64()
+		base64Str, err := image.Base64Encode()
 		if err != nil {
 			return nil, err
 		}
