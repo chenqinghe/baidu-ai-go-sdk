@@ -2,7 +2,7 @@ package gosdk
 
 import (
 	"errors"
-
+	
 	"github.com/imroc/req"
 )
 
@@ -22,18 +22,13 @@ type Client struct {
 	Authorizer   Authorizer
 }
 
-//授权成功响应信息
-type AuthResponseSuccess struct {
-	AccessToken   string `json:"access_token"`  //要获取的Access Token
-	ExpireIn      string `json:"expire_in"`     //Access Token的有效期(秒为单位，一般为1个月)；
-	RefreshToken  string `json:"refresh_token"` //以下参数忽略，暂时不用
-	Scope         string `json:"scope"`
-	SessionKey    string `json:"session_key"`
-	SessionSecret string `json:"session_secret"`
-}
-
-//授权失败响应信息
-type AuthResponseFailed struct {
+type AuthResponse struct {
+	AccessToken      string `json:"access_token"`  //要获取的Access Token
+	ExpireIn         string `json:"expire_in"`     //Access Token的有效期(秒为单位，一般为1个月)；
+	RefreshToken     string `json:"refresh_token"` //以下参数忽略，暂时不用
+	Scope            string `json:"scope"`
+	SessionKey       string `json:"session_key"`
+	SessionSecret    string `json:"session_secret"`
 	ERROR            string `json:"error"`             //错误码；关于错误码的详细信息请参考鉴权认证错误码(http://ai.baidu.com/docs#/Auth/top)
 	ErrorDescription string `json:"error_description"` //错误描述信息，帮助理解和解决发生的错误。
 }
@@ -49,15 +44,15 @@ func (da DefaultAuthorizer) Authorize(client *Client) error {
 	if err != nil {
 		return err
 	}
-	var rsSuccess AuthResponseSuccess
-	var rsFail AuthResponseFailed
-	if err := resp.ToJSON(&rsSuccess); err != nil || rsSuccess.AccessToken == "" { //json解析失败
-		if err := resp.ToJSON(&rsFail); err != nil || rsFail.ERROR == "" { //json解析失败
-			return errors.New("授权信息解析失败:" + err.Error())
-		}
-		return errors.New("授权失败:" + rsFail.ErrorDescription)
+	authresponse := new(AuthResponse)
+	if err := resp.ToJSON(authresponse); err != nil {
+		return err
 	}
-	client.AccessToken = rsSuccess.AccessToken
+	if authresponse.ERROR != "" || authresponse.AccessToken == "" {
+		return errors.New("授权失败:" + authresponse.ErrorDescription)
+	}
+	
+	client.AccessToken = authresponse.AccessToken
 	return nil
 }
 
@@ -65,7 +60,7 @@ func (client *Client) Auth() error {
 	if client.AccessToken != "" {
 		return nil
 	}
-
+	
 	if err := client.Authorizer.Authorize(client); err != nil {
 		return err
 	}

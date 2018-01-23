@@ -2,7 +2,11 @@ package ocr
 
 import "github.com/imroc/req"
 
-func (oc *OCRClient) doRequest(url string, params map[string]interface{}) (rs []byte, err error) {
+type OCRResponse struct {
+	*req.Resp
+}
+
+func (oc *OCRClient) doRequest(url string, params map[string]interface{}) (response *OCRResponse, err error) {
 
 	if err := oc.Auth(); err != nil {
 		return nil, err
@@ -16,7 +20,9 @@ func (oc *OCRClient) doRequest(url string, params map[string]interface{}) (rs []
 
 	resp, err := req.Post(url, req.Param(params), header)
 	if err != nil {
-		return
+		return nil, err
 	}
-	return resp.ToBytes()
+	return &OCRResponse{
+		Resp: resp,
+	}, nil
 }
