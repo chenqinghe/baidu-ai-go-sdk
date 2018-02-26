@@ -100,6 +100,7 @@ func (vc *VoiceClient) TextToSpeech(txt string, params ...TTSParam) ([]byte, err
 		}
 	}
 
+	//default parameters
 	ttsparams := &TTSParams{
 		Text:       txt,
 		Token:      vc.AccessToken,

@@ -8,7 +8,6 @@ import (
 
 	"net"
 
-	"fmt"
 	"github.com/imroc/req"
 )
 
@@ -73,12 +72,17 @@ func Language(lang string) ASRParam {
 
 ////SpeechToText 语音识别，将语音翻译成文字
 func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]string, error) {
+
 	content, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}
 	if len(content) > 10*MB {
 		return nil, errors.New("文件大小不能超过10M")
+	}
+
+	if err := vc.Auth(); err != nil {
+		return nil, err
 	}
 
 	spch := base64.StdEncoding.EncodeToString(content)
@@ -88,7 +92,11 @@ func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]str
 	if err != nil {
 		cuid = "anonymous"
 	} else {
-		cuid = netitfs[0].HardwareAddr.String()
+		for _, itf := range netitfs {
+			if cuid = itf.HardwareAddr.String(); len(cuid) > 0 {
+				break
+			}
+		}
 	}
 
 	asrParams := &ASRParams{
@@ -114,8 +122,6 @@ func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]str
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(resp.String())
 
 	var asrResponse *ASRResponse
 	if err := resp.ToJSON(asrResponse); err != nil {
