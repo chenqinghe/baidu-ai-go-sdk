@@ -93,9 +93,14 @@ func (vc *VoiceClient) TextToSpeech(txt string, params ...TTSParam) ([]byte, err
 	if err != nil {
 		cuid = "anonymous"
 	} else {
-		cuid = netitfs[0].HardwareAddr.String()
+		for _, itf := range netitfs {
+			if cuid = itf.HardwareAddr.String(); len(cuid) > 0 {
+				break
+			}
+		}
 	}
 
+	//default parameters
 	ttsparams := &TTSParams{
 		Text:       txt,
 		Token:      vc.AccessToken,
