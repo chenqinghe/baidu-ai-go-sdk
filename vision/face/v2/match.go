@@ -1,7 +1,8 @@
-package face
+package v2
 
 import (
 	"fmt"
+
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 	"github.com/imroc/req"
 )
@@ -10,7 +11,7 @@ const (
 	FACE_MATCH_URL = "https://aip.baidubce.com/rest/2.0/face/v2/match"
 )
 
-func (fc *FaceClient) Match(img1, img2 *vision.Image, options map[string]interface{}) (*FaceResponse, error) {
+func (fc FaceClient) Match(img1, img2 *vision.Image, options map[string]interface{}) (*FaceResponse, error) {
 	if err := fc.Auth(); err != nil {
 		return nil, err
 	}
@@ -26,7 +27,7 @@ func (fc *FaceClient) Match(img1, img2 *vision.Image, options map[string]interfa
 	header := req.Header{
 		"Content-Type": "application/x-www-form-urlencoded",
 	}
-	url := FACE_MATCH_URL + "?access_token=" + fc.AccessToken
+	url := fmt.Sprintf("%s?access_token=%s", FACE_MATCH_URL, fc.AccessToken)
 	resp, err := req.Post(url, header, req.Param(options))
 	if err != nil {
 		return nil, err

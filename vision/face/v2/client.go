@@ -1,4 +1,4 @@
-package face
+package v2
 
 import (
 	sdk "github.com/chenqinghe/baidu-ai-go-sdk"
