@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
-	"github.com/chenqinghe/baidu-ai-go-sdk/vision/face"
+	"github.com/chenqinghe/baidu-ai-go-sdk/vision/face/v2"
 )
 
 func Match() {
-	client := face.NewFaceClient(APIKEY, APISECRET)
+	client := v2.NewFaceClient(APIKEY, APISECRET)
 
 	rs, err := client.Match(
 		vision.MustFromFile("1.jpg"),

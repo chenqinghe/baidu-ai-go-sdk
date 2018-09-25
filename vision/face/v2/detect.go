@@ -1,4 +1,4 @@
-package face
+package v2
 
 import (
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	FACE_DETECT_URL = "https://aip.baidubce.com/rest/2.0/face/v2/detect"
+	faceDetectUrl = "https://aip.baidubce.com/rest/2.0/face/v2/detect"
 )
 
 type FaceResponse struct {
@@ -19,7 +19,7 @@ func (fc *FaceClient) DetectAndAnalysis(image *vision.Image, options map[string]
 		return nil, err
 	}
 
-	url := FACE_DETECT_URL + "?access_token=" + fc.AccessToken
+	url := faceDetectUrl + "?access_token=" + fc.AccessToken
 
 	base64Str, err := image.Base64Encode()
 	if err != nil {

@@ -16,8 +16,8 @@ const ASR_URL = "http://vop.baidu.com/server_api"
 //语音识别响应信息
 type ASRResponse struct {
 	CorpusNo string   `json:"corpus_no"`
-	ERRMSG   string   `json:"err_msg"`
-	ERRNO    int      `json:"err_no"`
+	ErrMsg   string   `json:"err_msg"`
+	ErrNo    int      `json:"err_no"`
 	Result   []string `json:"result"`
 	SN       string   `json:"sn"`
 }
@@ -70,7 +70,7 @@ func Language(lang string) ASRParam {
 	}
 }
 
-////SpeechToText 语音识别，将语音翻译成文字
+// SpeechToText 语音识别，将语音翻译成文字
 func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]string, error) {
 
 	content, err := ioutil.ReadAll(reader)
@@ -128,8 +128,8 @@ func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]str
 		return nil, err
 	}
 
-	if asrResponse.ERRNO != 0 {
-		return nil, errors.New("调用服务失败：" + asrResponse.ERRMSG)
+	if asrResponse.ErrNo != 0 {
+		return nil, errors.New("调用服务失败：" + asrResponse.ErrMsg)
 	}
 
 	return asrResponse.Result, nil
