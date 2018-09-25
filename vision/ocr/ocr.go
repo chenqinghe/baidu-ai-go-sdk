@@ -123,6 +123,7 @@ func parseRequestParam(image *vision.Image, def map[string]interface{}, params .
 			return nil, errors.New("image source is empty")
 		} else {
 			def["url"] = image.Url
+			delete(def, "image")
 		}
 	} else {
 		base64Str, err := image.Base64Encode()
