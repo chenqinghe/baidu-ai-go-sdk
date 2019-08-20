@@ -17,8 +17,11 @@ func (fc FaceClient) Match(img1, img2 *vision.Image, options map[string]interfac
 	}
 
 	imgContent1, err := img1.Base64Encode()
+	if err != nil {
+		return nil, err
+	}
 	imgContent2, err := img2.Base64Encode()
-	if err != nil { //任意一个出错都不行
+	if err != nil {
 		return nil, err
 	}
 

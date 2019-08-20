@@ -99,7 +99,7 @@ func Accuracy(opt string) RequestParam {
 		opt = "normal"
 	}
 	return func(m map[string]interface{}) {
-		m["accuracy"] = "normal"
+		m["accuracy"] = opt
 	}
 }
 

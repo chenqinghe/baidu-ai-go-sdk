@@ -77,8 +77,9 @@ func (oc *OCRClient) DriverLicenseRecognize(image *vision.Image, params ...Reque
 
 }
 
-//VehicleLicenseRecognize 行驶证识别
-//识别机动车行驶证所有关键字段
+// VehicleLicenseRecognize 行驶证识别
+// 识别机动车行驶证所有关键字段
+// 默认使用高精度服务，可选快速服务ocr.Accuracy("normal")
 func (oc *OCRClient) VehicleLicenseRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_VEHICLELICENSE_URL, defaultVehicleLicenseParams, params...)
