@@ -123,7 +123,7 @@ func (vc *VoiceClient) SpeechToText(reader io.Reader, params ...ASRParam) ([]str
 		return nil, err
 	}
 
-	var asrResponse *ASRResponse
+	var asrResponse = new(ASRResponse)
 	if err := resp.ToJSON(asrResponse); err != nil {
 		return nil, err
 	}
