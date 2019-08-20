@@ -8,9 +8,9 @@ import (
 
 const VOICE_AUTH_URL = "https://openapi.baidu.com/oauth/2.0/token"
 
-//Authorizer 用于设置access_token
-//可以通过RESTFul api的方式从百度方获取
-//有效期为一个月，可以存至数据库中然后从数据库中获取
+// Authorizer 用于设置access_token
+// 可以通过RESTFul api的方式从百度方获取
+// 有效期为一个月，可以存至数据库中然后从数据库中获取
 type Authorizer interface {
 	Authorize(*Client) error
 }
