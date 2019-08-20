@@ -2,7 +2,7 @@ package gosdk
 
 import (
 	"errors"
-	
+
 	"github.com/imroc/req"
 )
 
@@ -51,7 +51,7 @@ func (da DefaultAuthorizer) Authorize(client *Client) error {
 	if authresponse.ERROR != "" || authresponse.AccessToken == "" {
 		return errors.New("授权失败:" + authresponse.ErrorDescription)
 	}
-	
+
 	client.AccessToken = authresponse.AccessToken
 	return nil
 }
@@ -60,7 +60,7 @@ func (client *Client) Auth() error {
 	if client.AccessToken != "" {
 		return nil
 	}
-	
+
 	if err := client.Authorizer.Authorize(client); err != nil {
 		return err
 	}

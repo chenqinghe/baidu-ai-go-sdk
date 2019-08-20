@@ -121,7 +121,7 @@ func (vc *VoiceClient) TextToSpeech(txt string, params ...TTSParam) ([]byte, err
 	if err != nil {
 		return nil, errors.New("serialize failed: " + err.Error())
 	}
-	var p  = req.Param{}
+	var p = req.Param{}
 	if err := json.Unmarshal(t, &p); err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (vc *VoiceClient) TextToSpeech(txt string, params ...TTSParam) ([]byte, err
 	if err != nil {
 		return nil, err
 	}
-	
+
 	//通过Content-Type的头部来确定是否服务端合成成功。
 	//http://ai.baidu.com/docs#/TTS-API/top
 	respHeader := resp.Response().Header
