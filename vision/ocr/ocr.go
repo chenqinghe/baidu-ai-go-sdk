@@ -7,18 +7,16 @@ import (
 
 const (
 	OCR_GENERAL_BASIC_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
+	OCR_ACCURATE_BASIC_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
 	OCR_GENERAL_WITH_LOCATION_URL = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
 	OCR_GENERAL_ENHANCED_URL      = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
-)
-
-const (
-	OCR_WEBIMAGE_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
-	OCR_IDCARD_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
-	OCR_BANKCARD_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
-	OCR_DRIVERLICENSE_URL  = "https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license"
-	OCR_VEHICLELICENSE_URL = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
-	OCR_LICENSEPLATE_URL   = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
-	OCR_FORM_URL           = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
+	OCR_WEBIMAGE_URL              = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
+	OCR_IDCARD_URL                = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
+	OCR_BANKCARD_URL              = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
+	OCR_DRIVERLICENSE_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license"
+	OCR_VEHICLELICENSE_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
+	OCR_LICENSEPLATE_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
+	OCR_FORM_URL                  = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
 )
 
 //GeneralRecognizeBasic 通用文字识别
@@ -28,6 +26,15 @@ func (oc *OCRClient) GeneralRecognizeBasic(image *vision.Image, params ...Reques
 	return oc.ocr(image, OCR_GENERAL_BASIC_URL, defaultGeneralBasicParams, params...)
 
 }
+
+//AccurateRecognizeBasic 通用文字识别(高精度版)
+//识别图片中的文字信息
+func (oc *OCRClient) AccurateRecognizeBasic(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+
+	return oc.ocr(image, OCR_ACCURATE_BASIC_URL, defaultAccurateBasicParams, params...)
+
+}
+
 
 //GeneralRecognizeWithLocation 通用文字识别（含位置信息）
 //识别图片中的文字信息（包含文字区域的坐标信息）

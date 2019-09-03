@@ -55,3 +55,9 @@ var defaultVehicleLicenseParams = map[string]interface{}{
 var defaultLicensePlateParams = defaultBankcardParams
 
 var defaultFormParams = defaultBankcardParams
+
+var defaultAccurateBasicParams = map[string]interface{}{
+	"image":            "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	"detect_direction": "false", //是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括: - true：检测朝向； - false：不检测朝向。
+	"probability":      "false", //是否返回识别结果中每一行的置信度
+}

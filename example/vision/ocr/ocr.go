@@ -9,8 +9,8 @@ import (
 const (
 	// This Api Key and Api Secret is just for example,
 	// you should get your own first.
-	APIKEY    = "MDNsII2jkUtbF729GQOZt7FS"
-	APISECRET = "0vWCVCLsbWHMSH1wjvxaDq4VmvCZM2O9"
+	APIKEY    = "nKesFdOqHYzKFMzVcvX4cfDU"
+	APISECRET = "2xTn6TGucUNa6YUZoDOMeZWqYsKpop1n"
 )
 
 var client *ocr.OCRClient
@@ -20,8 +20,9 @@ func init() {
 }
 
 func main() {
-	GeneralRecognizeBasic()
-	GeneralRecognizeEnhanced()
+	//GeneralRecognizeBasic()
+	//GeneralRecognizeEnhanced()
+	AccurateRecognizeBasic()
 }
 
 func GeneralRecognizeBasic() {
@@ -52,4 +53,18 @@ func GeneralRecognizeEnhanced() {
 	}
 	fmt.Println(resp.ToString())
 
+}
+
+
+func AccurateRecognizeBasic(){
+	resp,err:= client.AccurateRecognizeBasic(
+		vision.MustFromFile("ocr.jpg"),
+		ocr.DetectDirection(),
+		ocr.WithProbability(),
+		)
+	if err!=nil {
+		panic(err)
+	}
+
+	fmt.Println(resp.ToString())
 }
