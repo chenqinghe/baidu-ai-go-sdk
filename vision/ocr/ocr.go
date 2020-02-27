@@ -17,6 +17,7 @@ const (
 	OCR_VEHICLELICENSE_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
 	OCR_LICENSEPLATE_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
 	OCR_FORM_URL                  = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
+	OCR_VAT_INVOICE_URL           = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice"
 )
 
 //GeneralRecognizeBasic 通用文字识别
@@ -106,6 +107,13 @@ func (oc *OCRClient) LicensePlateRecognize(image *vision.Image, params ...Reques
 func (oc *OCRClient) FormDataRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_FORM_URL, defaultFormParams, params...)
+
+}
+
+//VATInvoiceRecognize 增值税发票识别
+func (oc *OCRClient) VATInvoiceRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+
+	return oc.ocr(image, OCR_VAT_INVOICE_URL, defaultVATInvoiceParams, params...)
 
 }
 
