@@ -63,7 +63,7 @@ var defaultAccurateBasicParams = map[string]interface{}{
 }
 
 var defaultVATInvoiceParams = map[string]interface{}{
-	"image":    "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-	"accuracy": "", //normal（默认配置）对应普通精度模型，识别速度较快，在四要素的准确率上和 high 模型保持一致，high对应高精度识别模型，相应的时延会增加，因为超时导致失败的情况也会增加（错误码282000）
-	"type":     "", //进行识别的增值税发票类型，默认为 normal，可缺省, - normal：可识别增值税普票、专票、电子发票, - roll：可识别增值税卷票
+	"image":    "",       //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	"accuracy": "normal", //normal（默认配置）对应普通精度模型，识别速度较快，在四要素的准确率上和 high 模型保持一致，high对应高精度识别模型，相应的时延会增加，因为超时导致失败的情况也会增加（错误码282000）
+	"type":     "normal", //进行识别的增值税发票类型，默认为 normal，可缺省, - normal：可识别增值税普票、专票、电子发票, - roll：可识别增值税卷票
 }
