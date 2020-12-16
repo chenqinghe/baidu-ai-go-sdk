@@ -6,18 +6,20 @@ import (
 )
 
 const (
-	OCR_GENERAL_BASIC_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
-	OCR_ACCURATE_BASIC_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
-	OCR_GENERAL_WITH_LOCATION_URL = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
-	OCR_GENERAL_ENHANCED_URL      = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
-	OCR_WEBIMAGE_URL              = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
-	OCR_IDCARD_URL                = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
-	OCR_BANKCARD_URL              = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
-	OCR_DRIVERLICENSE_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license"
-	OCR_VEHICLELICENSE_URL        = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
-	OCR_LICENSEPLATE_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
-	OCR_FORM_URL                  = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
-	OCR_VAT_INVOICE_URL           = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice"
+	OCR_GENERAL_BASIC_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
+	OCR_ACCURATE_BASIC_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
+	OCR_GENERAL_WITH_LOCATION_URL  = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
+	OCR_GENERAL_ENHANCED_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
+	OCR_WEBIMAGE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
+	OCR_IDCARD_URL                 = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
+	OCR_BANKCARD_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
+	OCR_DRIVERLICENSE_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license"
+	OCR_VEHICLELICENSE_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license"
+	OCR_LICENSEPLATE_URL           = "https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate"
+	OCR_FORM_URL                   = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
+	OCR_VAT_INVOICE_URL            = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice"
+	OCR_IOCR_RECOGNISE_URL         = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise"
+	OCR_IOCR_RECOGNISE_FINANCE_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise/finance"
 )
 
 //GeneralRecognizeBasic 通用文字识别
@@ -35,7 +37,6 @@ func (oc *OCRClient) AccurateRecognizeBasic(image *vision.Image, params ...Reque
 	return oc.ocr(image, OCR_ACCURATE_BASIC_URL, defaultAccurateBasicParams, params...)
 
 }
-
 
 //GeneralRecognizeWithLocation 通用文字识别（含位置信息）
 //识别图片中的文字信息（包含文字区域的坐标信息）
@@ -112,7 +113,6 @@ func (oc *OCRClient) FormDataRecognize(image *vision.Image, params ...RequestPar
 
 //VATInvoiceRecognize 增值税发票识别
 func (oc *OCRClient) VATInvoiceRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
-
 	return oc.ocr(image, OCR_VAT_INVOICE_URL, defaultVATInvoiceParams, params...)
 
 }
@@ -121,7 +121,15 @@ func (oc *OCRClient) VATInvoiceRecognize(image *vision.Image, params ...RequestP
 
 //TODO:通用票据识别
 
-//TODO:自定义模板文字识别
+//IocrRecognise 自定义模板文字识别
+func (oc *OCRClient) IocrRecognise(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_IOCR_RECOGNISE_URL, defaultIocrRecogniseParams, params...)
+}
+
+//IocrRecogniseFinance 自定义模板文字识别  财会版
+func (oc *OCRClient) IocrRecogniseFinance(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_IOCR_RECOGNISE_FINANCE_URL, defaultIocrRecogniseFinanceParams, params...)
+}
 
 func (oc *OCRClient) ocr(image *vision.Image, url string, def map[string]interface{}, params ...RequestParam) (*OCRResponse, error) {
 	requestParams, err := parseRequestParam(image, def, params...)
@@ -133,7 +141,6 @@ func (oc *OCRClient) ocr(image *vision.Image, url string, def map[string]interfa
 }
 
 func parseRequestParam(image *vision.Image, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
-
 	if image.Reader == nil {
 		if image.Url == "" {
 			return nil, errors.New("image source is empty")

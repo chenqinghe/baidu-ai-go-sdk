@@ -67,3 +67,15 @@ var defaultVATInvoiceParams = map[string]interface{}{
 	"accuracy": "normal", //normal（默认配置）对应普通精度模型，识别速度较快，在四要素的准确率上和 high 模型保持一致，high对应高精度识别模型，相应的时延会增加，因为超时导致失败的情况也会增加（错误码282000）
 	"type":     "normal", //进行识别的增值税发票类型，默认为 normal，可缺省, - normal：可识别增值税普票、专票、电子发票, - roll：可识别增值税卷票
 }
+
+var defaultIocrRecogniseParams = map[string]interface{}{
+	"image":        "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
+	"url":          "", //图片存储的 BOS（百度云存储）url，暂仅支持BOS url，不支持其他图床，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式，当image字段存在时url字段失效，不支持https的图片链接
+	"templateSign": "", //模板 ID，自定义模板或预置模板的唯一标示，可用于调用指定的识别模板进行结构化识别，可在「模板管理」页查看并复制使用
+	"classifierId": "", //分类器Id，分类器的唯一标示，可用于调用指定的分类器对传入的图片进行自动分类及识别，与 templateSign 至少存在一个，如同时存在，则优先级 templateSign > classfierId
+}
+
+var defaultIocrRecogniseFinanceParams = map[string]interface{}{
+	"image":        "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
+	"templateSign": "", //模板 ID，自定义模板或预置模板的唯一标示，可用于调用指定的识别模板进行结构化识别，可在「模板管理」页查看并复制使用
+}
