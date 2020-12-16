@@ -3,20 +3,18 @@
 package voice
 
 import (
+	"encoding/json"
 	"errors"
-
 	"io/ioutil"
-
 	"net"
 
-	"encoding/json"
 	"github.com/imroc/req"
 )
 
 const TTS_URL = "http://tsn.baidu.com/text2audio"
 
 var (
-	ErrTextTooLong = errors.New("The input string is too long")
+	ErrTextTooLong = errors.New("the input string is too long")
 )
 
 type TTSParams struct {

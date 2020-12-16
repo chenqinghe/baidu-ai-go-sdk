@@ -5,7 +5,6 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-
 	"net"
 
 	"github.com/imroc/req"
