@@ -109,3 +109,17 @@ func MultiDetect() RequestParam {
 		m["multi_detect"] = true
 	}
 }
+
+//自定义模板文字识别 模板号
+func TemplateSign(templateSign string) RequestParam {
+	return func(m map[string]interface{}) {
+		m["templateSign"] = templateSign
+	}
+}
+
+//自定义模板文字识别 分类器Id
+func ClassifierId(classifierId int) RequestParam {
+	return func(m map[string]interface{}) {
+		m["classifierId"] = classifierId
+	}
+}
