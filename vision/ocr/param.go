@@ -120,6 +120,8 @@ func TemplateSign(templateSign string) RequestParam {
 //自定义模板文字识别 分类器Id
 func ClassifierId(classifierId int) RequestParam {
 	return func(m map[string]interface{}) {
-		m["classifierId"] = classifierId
+		if classifierId != 0 {
+			m["classifierId"] = classifierId
+		}
 	}
 }
