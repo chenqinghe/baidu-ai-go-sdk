@@ -93,7 +93,8 @@ func UnifiedValidPeriod() RequestParam {
 	}
 }
 
-//normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+// normal 使用快速服务，1200ms左右时延；high使用高精度服务，1600ms左右时延
+// 默认使用快速服务，有精度损失
 func Accuracy(opt string) RequestParam {
 	if opt != "normal" && opt != "high" {
 		opt = "normal"
