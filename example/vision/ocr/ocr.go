@@ -21,7 +21,6 @@ func init() {
 
 func main() {
 	//GeneralRecognizeBasic()
-	//GeneralRecognizeEnhanced()
 	AccurateRecognizeBasic()
 }
 
@@ -40,29 +39,13 @@ func GeneralRecognizeBasic() {
 	fmt.Println(rs.ToString())
 }
 
-func GeneralRecognizeEnhanced() {
-
-	resp, err := client.GeneralRecognizeEnhanced(
-		vision.MustFromFile("ocr.jpg"),
-		ocr.DetectDirection(),
-		ocr.DetectLanguage(),
-		ocr.LanguageType("CHN_ENG"),
-	)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(resp.ToString())
-
-}
-
-
-func AccurateRecognizeBasic(){
-	resp,err:= client.AccurateRecognizeBasic(
+func AccurateRecognizeBasic() {
+	resp, err := client.AccurateRecognizeBasic(
 		vision.MustFromFile("ocr.jpg"),
 		ocr.DetectDirection(),
 		ocr.WithProbability(),
-		)
-	if err!=nil {
+	)
+	if err != nil {
 		panic(err)
 	}
 
