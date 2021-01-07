@@ -20,8 +20,9 @@ func init() {
 }
 
 func main() {
-	//GeneralRecognizeBasic()
-	AccurateRecognizeBasic()
+	GeneralRecognizeBasic()
+	//AccurateRecognizeBasic()
+	//AccurateRecognize()
 }
 
 func GeneralRecognizeBasic() {
@@ -44,6 +45,20 @@ func AccurateRecognizeBasic() {
 		vision.MustFromFile("ocr.jpg"),
 		ocr.DetectDirection(),
 		ocr.WithProbability(),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(resp.ToString())
+}
+
+func AccurateRecognize() {
+	resp, err := client.AccurateRecognize(
+		vision.MustFromFile("ocr.jpg"),
+		ocr.DetectDirection(),
+		ocr.WithProbability(),
+		ocr.LanguageType("CHN_ENG"), //识别语言类型，默认为CHN_ENG。
 	)
 	if err != nil {
 		panic(err)
