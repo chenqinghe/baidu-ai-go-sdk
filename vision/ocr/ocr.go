@@ -9,7 +9,7 @@ const (
 	OCR_GENERAL_BASIC_URL          = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
 	OCR_ACCURATE_BASIC_URL         = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
 	OCR_GENERAL_WITH_LOCATION_URL  = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
-	OCR_GENERAL_ENHANCED_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
+	OCR_ACCURATE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate"
 	OCR_WEBIMAGE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
 	OCR_IDCARD_URL                 = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
 	OCR_BANKCARD_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
@@ -38,19 +38,19 @@ func (oc *OCRClient) AccurateRecognizeBasic(image *vision.Image, params ...Reque
 
 }
 
+//AccurateRecognizeBasic 通用文字识别(高精度带位置版)
+//识别图片中的文字信息
+func (oc *OCRClient) AccurateRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+
+	return oc.ocr(image, OCR_ACCURATE_URL, defaultAccurateBasicParams, params...)
+
+}
+
 //GeneralRecognizeWithLocation 通用文字识别（含位置信息）
 //识别图片中的文字信息（包含文字区域的坐标信息）
 func (oc *OCRClient) GeneralRecognizeWithLocation(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
 	return oc.ocr(image, OCR_GENERAL_WITH_LOCATION_URL, defaultGeneralWithLocationParams, params...)
-
-}
-
-//GeneralRecognizeEnhanced 通用文字识别（含生僻字）
-//识别图片中的文字信息（包含对常见字和生僻字的识别）
-func (oc *OCRClient) GeneralRecognizeEnhanced(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
-
-	return oc.ocr(image, OCR_GENERAL_ENHANCED_URL, defaultDeneralEnhancedParams, params...)
 
 }
 
