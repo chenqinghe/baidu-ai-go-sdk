@@ -38,7 +38,7 @@ fmt.Println(rs.ToString())
 - 通用文字识别（高精度版）
 
 ```Go
-resp, err := client.GeneralRecognizeEnhanced(
+resp, err := client.AccurateRecognizeBasic(
 		ocr.MustFromFile("ocr.jpg"),
 		ocr.DetectDirection(),
 		ocr.DetectLanguage(),
