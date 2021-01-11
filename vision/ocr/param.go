@@ -15,6 +15,17 @@ func LanguageType(lang string) RequestParam {
 		"RUS",
 		"JAP",
 		"KOR",
+		//以下选项为高精度OCR才支持的选项
+		"DAN", //丹麦语
+		"DUT", //荷兰语
+		"MAL", //马来语
+		"SWE", //瑞典语
+		"IND", //印尼语
+		"POL", //波兰语
+		"ROM", //罗马尼亚语
+		"TUR", //土耳其语
+		"GRE", //希腊语
+		"HUN", //匈牙利语
 	}
 
 	illegal := true
@@ -93,7 +104,8 @@ func UnifiedValidPeriod() RequestParam {
 	}
 }
 
-//normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
+// normal 使用快速服务，1200ms左右时延；high使用高精度服务，1600ms左右时延
+// 默认使用快速服务，有精度损失
 func Accuracy(opt string) RequestParam {
 	if opt != "normal" && opt != "high" {
 		opt = "normal"
