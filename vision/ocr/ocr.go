@@ -2,6 +2,7 @@ package ocr
 
 import (
 	"errors"
+
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 )
 
@@ -21,6 +22,10 @@ const (
 	OCR_VAT_INVOICE_URL            = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice"
 	OCR_IOCR_RECOGNISE_URL         = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise"
 	OCR_IOCR_RECOGNISE_FINANCE_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise/finance"
+	OCR_VIN_URL                    = "https://aip.baidubce.com/rest/2.0/ocr/v1/vin_code"
+	OCR_CAR_TYPE_URL               = "https://aip.baidubce.com/rest/2.0/image-classify/v1/car"
+	OCR_NUMBER_URL                 = "https://aip.baidubce.com/rest/2.0/ocr/v1/numbers"
+	OCR_BUSINESS_LICENSE_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/business_license"
 )
 
 //GeneralRecognizeBasic 通用文字识别
@@ -128,7 +133,25 @@ func (oc *OCRClient) VATInvoiceRecognize(image *vision.Image, params ...RequestP
 
 }
 
-//TODO:营业执照识别
+//营业执照识别
+func (oc *OCRClient) BusinessLicenseRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_BUSINESS_LICENSE_URL, defaultBusinessLicenseParams, params...)
+}
+
+//车型识别识别
+func (oc *OCRClient) CarTypeRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_CAR_TYPE_URL, defaultCarTypeParams, params...)
+}
+
+//Vin码识别
+func (oc *OCRClient) VinRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_VIN_URL, defaultVinParams, params...)
+}
+
+// 数字识别
+func (oc *OCRClient) NumberRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_NUMBER_URL, defaultNumberParams, params...)
+}
 
 //TODO:通用票据识别
 

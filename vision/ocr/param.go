@@ -137,3 +137,37 @@ func ClassifierId(classifierId int) RequestParam {
 		}
 	}
 }
+
+// 车型识别返回值数量,默认返回可能性top 5的车型
+func CarTypeTopNum(topNum int) RequestParam {
+	return func(m map[string]interface{}) {
+		if topNum <= 0 {
+			m["top_num"] = 5
+		} else {
+			m["top_num"] = topNum
+		}
+	}
+}
+
+// 车型识别返回百科词条数量
+func CarTypeBaikeNum(baikeNum int) RequestParam {
+	return func(m map[string]interface{}) {
+		if baikeNum <= 0 {
+			m["baike_num"] = 0
+		} else {
+			m["baike_num"] = baikeNum
+		}
+	}
+}
+
+// 数字识别,是否定位单字符位置
+func NumberSingleWordPos(opt string) RequestParam {
+	if opt != "small" && opt != "big" {
+		return func(m map[string]interface{}) {
+			m["recognize_granularity"] = "small"
+		}
+	}
+	return func(m map[string]interface{}) {
+		m["recognize_granularity"] = opt
+	}
+}
