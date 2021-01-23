@@ -68,6 +68,13 @@ func WithProbability() RequestParam {
 	}
 }
 
+//是否输出段落信息
+func WithParagraph() RequestParam {
+	return func(m map[string]interface{}) {
+		m["paragraph"] = true
+	}
+}
+
 //是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
 func RecognizeGranularity() RequestParam {
 	return func(m map[string]interface{}) {
