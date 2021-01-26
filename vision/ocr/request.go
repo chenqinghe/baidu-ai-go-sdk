@@ -1,6 +1,6 @@
 package ocr
 
-import	"github.com/imroc/req"
+import "github.com/imroc/req"
 
 type OCRResponse struct {
 	*req.Resp
