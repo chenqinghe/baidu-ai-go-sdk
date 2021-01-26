@@ -21,9 +21,10 @@ func init() {
 }
 
 func main() {
-	ConcurrentAccurateRecognizeBasic()
+	//AccurateRecognizeBasic()
 	//AccurateRecognizeBasic()
 	//AccurateRecognize()
+	GeneralRecognizeBasic()
 }
 
 func GeneralRecognizeBasic() {
@@ -54,7 +55,6 @@ func ConcurrentAccurateRecognizeBasic() {
 	for _, image := range images {
 		go func(img string) {
 			defer wg.Done()
-			client = ocr.NewOCRClient(APIKEY, APISECRET)
 			resp, err := client.AccurateRecognizeBasic(
 				vision.MustFromFile(img),
 				ocr.DetectDirection(),
