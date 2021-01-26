@@ -152,11 +152,16 @@ func (oc *OCRClient) ocr(image *vision.Image, url string, def map[string]interfa
 }
 
 func parseRequestParam(image *vision.Image, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
+	//这里def参数引用自包级变量defaultParams，并发请求时，公用同一个map传参，将导致同一时刻不同请求的参数相互覆盖，这里拷贝一份def避免此问题
+	finalParams := make(map[string]interface{})
+	for k, v := range def {
+		finalParams[k] = v
+	}
 	if image.Reader == nil {
 		if image.Url == "" {
 			return nil, errors.New("image source is empty")
 		} else {
-			def["url"] = image.Url
+			finalParams["url"] = image.Url
 			delete(def, "image")
 		}
 	} else {
@@ -164,13 +169,13 @@ func parseRequestParam(image *vision.Image, def map[string]interface{}, params .
 		if err != nil {
 			return nil, err
 		}
-		def["image"] = base64Str
+		finalParams["image"] = base64Str
 	}
 
 	for _, fn := range params {
-		fn(def)
+		fn(finalParams)
 	}
 
-	return def, nil
+	return finalParams, nil
 
 }

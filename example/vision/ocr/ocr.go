@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision/ocr"
+	"sync"
 )
 
 const (
@@ -20,7 +21,7 @@ func init() {
 }
 
 func main() {
-	GeneralRecognizeBasic()
+	ConcurrentAccurateRecognizeBasic()
 	//AccurateRecognizeBasic()
 	//AccurateRecognize()
 }
@@ -38,6 +39,35 @@ func GeneralRecognizeBasic() {
 	}
 
 	fmt.Println(rs.ToString())
+}
+
+func ConcurrentAccurateRecognizeBasic() {
+	images := []string{
+		"ocr_image_0.jpg",
+		"ocr_image_1.jpg",
+		"ocr_image_2.jpg",
+		"ocr_image_3.jpg",
+	}
+
+	wg := &sync.WaitGroup{}
+	wg.Add(len(images))
+	for _, image := range images {
+		go func(img string) {
+			defer wg.Done()
+			client = ocr.NewOCRClient(APIKEY, APISECRET)
+			resp, err := client.AccurateRecognizeBasic(
+				vision.MustFromFile(img),
+				ocr.DetectDirection(),
+				ocr.WithProbability(),
+			)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(img)
+			fmt.Println(resp.ToString())
+		}(image)
+	}
+	wg.Wait()
 }
 
 func AccurateRecognizeBasic() {
