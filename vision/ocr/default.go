@@ -62,6 +62,18 @@ var defaultAccurateBasicParams = map[string]interface{}{
 	"probability":      "false", //是否返回识别结果中每一行的置信度
 }
 
+var defaultAccurateRecognizeParams = map[string]interface{}{
+	"image":            "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	"detect_direction": "false", //是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括: - true：检测朝向； - false：不检测朝向。
+	"probability":      "false", //是否返回识别结果中每一行的置信度
+}
+
+var defaultHandWritingParams = map[string]interface{}{
+	"image":                 "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	"recognize_granularity": "big",   //是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+	"probability":           "false", //是否返回识别结果中每一行的置信度
+}
+
 var defaultVATInvoiceParams = map[string]interface{}{
 	"image":    "",       //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
 	"accuracy": "normal", //normal（默认配置）对应普通精度模型，识别速度较快，在四要素的准确率上和 high 模型保持一致，high对应高精度识别模型，相应的时延会增加，因为超时导致失败的情况也会增加（错误码282000）

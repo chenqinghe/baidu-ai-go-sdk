@@ -25,6 +25,7 @@ func main() {
 	//AccurateRecognizeBasic()
 	//AccurateRecognize()
 	GeneralRecognizeBasic()
+	//HandWriting()
 }
 
 func GeneralRecognizeBasic() {
@@ -34,6 +35,18 @@ func GeneralRecognizeBasic() {
 		ocr.DetectLanguage(),        //是否检测语言，默认不检测。
 		ocr.LanguageType("CHN_ENG"), //识别语言类型，默认为CHN_ENG。
 		ocr.WithProbability(),       //是否返回识别结果中每一行的置信度
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(rs.ToString())
+}
+
+func HandWriting() {
+	rs, err := client.HandWriting(
+		vision.MustFromFile("ocr_hand_writing.jpg"),
+		ocr.WithProbability(), //是否返回识别结果中每一行的置信度
 	)
 	if err != nil {
 		panic(err)

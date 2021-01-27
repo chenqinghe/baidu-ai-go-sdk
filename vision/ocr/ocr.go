@@ -12,6 +12,7 @@ const (
 	OCR_GENERAL_ENHANCED_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
 	OCR_GENERAL_WITH_LOCATION_URL  = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
 	OCR_ACCURATE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate"
+	OCR_HANDWRITING_URL            = "https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting"
 	OCR_WEBIMAGE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
 	OCR_IDCARD_URL                 = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
 	OCR_BANKCARD_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
@@ -66,7 +67,15 @@ func (oc *OCRClient) AccurateRecognizeBasic(image *vision.Image, params ...Reque
 //识别图片中的文字信息
 func (oc *OCRClient) AccurateRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
-	return oc.ocr(image, OCR_ACCURATE_URL, defaultAccurateBasicParams, params...)
+	return oc.ocr(image, OCR_ACCURATE_URL, defaultAccurateRecognizeParams, params...)
+
+}
+
+//HandWriting 手写体文字识别
+//识别图片中的手写文字信息 ref: https://ai.baidu.com/ai-doc/OCR/hk3h7y2qq
+func (oc *OCRClient) HandWriting(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+
+	return oc.ocr(image, OCR_HANDWRITING_URL, defaultHandWritingParams, params...)
 
 }
 
