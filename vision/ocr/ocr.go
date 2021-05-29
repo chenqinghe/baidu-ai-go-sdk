@@ -2,6 +2,7 @@ package ocr
 
 import (
 	"errors"
+
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 )
 
@@ -11,6 +12,7 @@ const (
 	OCR_GENERAL_ENHANCED_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_enhanced"
 	OCR_GENERAL_WITH_LOCATION_URL  = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
 	OCR_ACCURATE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate"
+	OCR_HANDWRITING_URL            = "https://aip.baidubce.com/rest/2.0/ocr/v1/handwriting"
 	OCR_WEBIMAGE_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/webimage"
 	OCR_IDCARD_URL                 = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
 	OCR_BANKCARD_URL               = "https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard"
@@ -21,6 +23,10 @@ const (
 	OCR_VAT_INVOICE_URL            = "https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice"
 	OCR_IOCR_RECOGNISE_URL         = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise"
 	OCR_IOCR_RECOGNISE_FINANCE_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise/finance"
+	OCR_VIN_URL                    = "https://aip.baidubce.com/rest/2.0/ocr/v1/vin_code"
+	OCR_CAR_TYPE_URL               = "https://aip.baidubce.com/rest/2.0/image-classify/v1/car"
+	OCR_NUMBER_URL                 = "https://aip.baidubce.com/rest/2.0/ocr/v1/numbers"
+	OCR_BUSINESS_LICENSE_URL       = "https://aip.baidubce.com/rest/2.0/ocr/v1/business_license"
 )
 
 //GeneralRecognizeBasic 通用文字识别
@@ -61,7 +67,15 @@ func (oc *OCRClient) AccurateRecognizeBasic(image *vision.Image, params ...Reque
 //识别图片中的文字信息
 func (oc *OCRClient) AccurateRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
 
-	return oc.ocr(image, OCR_ACCURATE_URL, defaultAccurateBasicParams, params...)
+	return oc.ocr(image, OCR_ACCURATE_URL, defaultAccurateRecognizeParams, params...)
+
+}
+
+//HandWriting 手写体文字识别
+//识别图片中的手写文字信息 ref: https://ai.baidu.com/ai-doc/OCR/hk3h7y2qq
+func (oc *OCRClient) HandWriting(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+
+	return oc.ocr(image, OCR_HANDWRITING_URL, defaultHandWritingParams, params...)
 
 }
 
@@ -128,7 +142,25 @@ func (oc *OCRClient) VATInvoiceRecognize(image *vision.Image, params ...RequestP
 
 }
 
-//TODO:营业执照识别
+//营业执照识别
+func (oc *OCRClient) BusinessLicenseRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_BUSINESS_LICENSE_URL, defaultBusinessLicenseParams, params...)
+}
+
+//车型识别识别
+func (oc *OCRClient) CarTypeRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_CAR_TYPE_URL, defaultCarTypeParams, params...)
+}
+
+//Vin码识别
+func (oc *OCRClient) VinRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_VIN_URL, defaultVinParams, params...)
+}
+
+// 数字识别
+func (oc *OCRClient) NumberRecognize(image *vision.Image, params ...RequestParam) (*OCRResponse, error) {
+	return oc.ocr(image, OCR_NUMBER_URL, defaultNumberParams, params...)
+}
 
 //TODO:通用票据识别
 
@@ -152,11 +184,16 @@ func (oc *OCRClient) ocr(image *vision.Image, url string, def map[string]interfa
 }
 
 func parseRequestParam(image *vision.Image, def map[string]interface{}, params ...RequestParam) (map[string]interface{}, error) {
+	//这里def参数引用自包级变量defaultParams，并发请求时，公用同一个map传参，将导致同一时刻不同请求的参数相互覆盖，这里拷贝一份def避免此问题
+	finalParams := make(map[string]interface{})
+	for k, v := range def {
+		finalParams[k] = v
+	}
 	if image.Reader == nil {
 		if image.Url == "" {
 			return nil, errors.New("image source is empty")
 		} else {
-			def["url"] = image.Url
+			finalParams["url"] = image.Url
 			delete(def, "image")
 		}
 	} else {
@@ -164,13 +201,13 @@ func parseRequestParam(image *vision.Image, def map[string]interface{}, params .
 		if err != nil {
 			return nil, err
 		}
-		def["image"] = base64Str
+		finalParams["image"] = base64Str
 	}
 
 	for _, fn := range params {
-		fn(def)
+		fn(finalParams)
 	}
 
-	return def, nil
+	return finalParams, nil
 
 }

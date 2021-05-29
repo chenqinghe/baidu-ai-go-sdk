@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision"
 	"github.com/chenqinghe/baidu-ai-go-sdk/vision/ocr"
+	"sync"
 )
 
 const (
@@ -20,9 +21,11 @@ func init() {
 }
 
 func main() {
-	GeneralRecognizeBasic()
+	//AccurateRecognizeBasic()
 	//AccurateRecognizeBasic()
 	//AccurateRecognize()
+	GeneralRecognizeBasic()
+	//HandWriting()
 }
 
 func GeneralRecognizeBasic() {
@@ -38,6 +41,46 @@ func GeneralRecognizeBasic() {
 	}
 
 	fmt.Println(rs.ToString())
+}
+
+func HandWriting() {
+	rs, err := client.HandWriting(
+		vision.MustFromFile("ocr_hand_writing.jpg"),
+		ocr.WithProbability(), //是否返回识别结果中每一行的置信度
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(rs.ToString())
+}
+
+func ConcurrentAccurateRecognizeBasic() {
+	images := []string{
+		"ocr_image_0.jpg",
+		"ocr_image_1.jpg",
+		"ocr_image_2.jpg",
+		"ocr_image_3.jpg",
+	}
+
+	wg := &sync.WaitGroup{}
+	wg.Add(len(images))
+	for _, image := range images {
+		go func(img string) {
+			defer wg.Done()
+			resp, err := client.AccurateRecognizeBasic(
+				vision.MustFromFile(img),
+				ocr.DetectDirection(),
+				ocr.WithProbability(),
+			)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(img)
+			fmt.Println(resp.ToString())
+		}(image)
+	}
+	wg.Wait()
 }
 
 func AccurateRecognizeBasic() {

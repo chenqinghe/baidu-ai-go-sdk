@@ -62,6 +62,18 @@ var defaultAccurateBasicParams = map[string]interface{}{
 	"probability":      "false", //是否返回识别结果中每一行的置信度
 }
 
+var defaultAccurateRecognizeParams = map[string]interface{}{
+	"image":            "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	"detect_direction": "false", //是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括: - true：检测朝向； - false：不检测朝向。
+	"probability":      "false", //是否返回识别结果中每一行的置信度
+}
+
+var defaultHandWritingParams = map[string]interface{}{
+	"image":                 "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+	"recognize_granularity": "big",   //是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+	"probability":           "false", //是否返回识别结果中每一行的置信度
+}
+
 var defaultVATInvoiceParams = map[string]interface{}{
 	"image":    "",       //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
 	"accuracy": "normal", //normal（默认配置）对应普通精度模型，识别速度较快，在四要素的准确率上和 high 模型保持一致，high对应高精度识别模型，相应的时延会增加，因为超时导致失败的情况也会增加（错误码282000）
@@ -78,4 +90,28 @@ var defaultIocrRecogniseParams = map[string]interface{}{
 var defaultIocrRecogniseFinanceParams = map[string]interface{}{
 	"image":        "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
 	"templateSign": "", //模板 ID，自定义模板或预置模板的唯一标示，可用于调用指定的识别模板进行结构化识别，可在「模板管理」页查看并复制使用
+}
+
+var defaultBusinessLicenseParams = map[string]interface{}{
+	"image":            "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
+	"url":              "", //图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式，当image字段存在时url字段失效,请注意关闭URL防盗链
+	"detect_direction": "", //此参数新版本无需传，支持自动检测图像旋转角度；朝向是指输入图像是正常方向、逆时针旋转90/180/270度
+	"accuracy":         "", //可选值：normal,high参数选normal或为空使用快速服务；选择high使用高精度服务，但是时延会根据具体图片有相应的增加
+}
+
+var defaultCarTypeParams = map[string]interface{}{
+	"image":     "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
+	"top_num":   5,  //uint32	-	返回结果top n，默认5。
+	"baike_num": 0,  //integer	0	返回百科信息的结果数，默认不返回
+}
+
+var defaultVinParams = map[string]interface{}{
+	"image": "", //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
+	"url":   "", //图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式，当image字段存在时url字段失效,请注意关闭URL防盗链
+}
+
+var defaultNumberParams = map[string]interface{}{
+	"image":                 "",      //图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/jpeg/png/bmp格式
+	"recognize_granularity": "small", //是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
+	"detect_direction":      "false", //是否检测图像朝向，默认不检测，即：false。可选值包括true - 检测朝向；false - 不检测朝向。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。
 }

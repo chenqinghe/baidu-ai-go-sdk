@@ -16,16 +16,17 @@ func LanguageType(lang string) RequestParam {
 		"JAP",
 		"KOR",
 		//以下选项为高精度OCR才支持的选项
-		"DAN", //丹麦语
-		"DUT", //荷兰语
-		"MAL", //马来语
-		"SWE", //瑞典语
-		"IND", //印尼语
-		"POL", //波兰语
-		"ROM", //罗马尼亚语
-		"TUR", //土耳其语
-		"GRE", //希腊语
-		"HUN", //匈牙利语
+		"auto_detect", //自动检测语言
+		"DAN",         //丹麦语
+		"DUT",         //荷兰语
+		"MAL",         //马来语
+		"SWE",         //瑞典语
+		"IND",         //印尼语
+		"POL",         //波兰语
+		"ROM",         //罗马尼亚语
+		"TUR",         //土耳其语
+		"GRE",         //希腊语
+		"HUN",         //匈牙利语
 	}
 
 	illegal := true
@@ -65,6 +66,13 @@ func DetectLanguage() RequestParam {
 func WithProbability() RequestParam {
 	return func(m map[string]interface{}) {
 		m["probability"] = true
+	}
+}
+
+//是否输出段落信息
+func WithParagraph() RequestParam {
+	return func(m map[string]interface{}) {
+		m["paragraph"] = true
 	}
 }
 
@@ -135,5 +143,39 @@ func ClassifierId(classifierId int) RequestParam {
 		if classifierId != 0 {
 			m["classifierId"] = classifierId
 		}
+	}
+}
+
+// 车型识别返回值数量,默认返回可能性top 5的车型
+func CarTypeTopNum(topNum int) RequestParam {
+	return func(m map[string]interface{}) {
+		if topNum <= 0 {
+			m["top_num"] = 5
+		} else {
+			m["top_num"] = topNum
+		}
+	}
+}
+
+// 车型识别返回百科词条数量
+func CarTypeBaikeNum(baikeNum int) RequestParam {
+	return func(m map[string]interface{}) {
+		if baikeNum <= 0 {
+			m["baike_num"] = 0
+		} else {
+			m["baike_num"] = baikeNum
+		}
+	}
+}
+
+// 数字识别,是否定位单字符位置
+func NumberSingleWordPos(opt string) RequestParam {
+	if opt != "small" && opt != "big" {
+		return func(m map[string]interface{}) {
+			m["recognize_granularity"] = "small"
+		}
+	}
+	return func(m map[string]interface{}) {
+		m["recognize_granularity"] = opt
 	}
 }
