@@ -20,10 +20,8 @@ func (fc FaceClient) PersonVerify(image, idCardNumber, name string, options map[
 		return nil, errors.New("image length is invalid")
 	}
 
-	if fc.AccessToken == "" {
-		if err := fc.Auth(); err != nil {
-			return nil, err
-		}
+	if err := fc.Auth(); err != nil {
+		return nil, err
 	}
 	options["image"] = image
 	options["id_card_number"] = idCardNumber
