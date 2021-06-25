@@ -18,12 +18,9 @@ type IdentifyResponse struct {
 }
 
 func (fc FaceClient) Identify(img *vision.Image, groupID []string, options map[string]interface{}) (*IdentifyResponse, error) {
-	if fc.AccessToken == "" {
-		if err := fc.Auth(); err != nil {
-			return nil, err
-		}
+	if err := fc.Auth(); err != nil {
+		return nil, err
 	}
-
 	encodedImg, err := img.Base64Encode()
 	if err != nil {
 		return nil, err
@@ -50,12 +47,9 @@ type VerifyResponse struct {
 }
 
 func (fc FaceClient) Verify(img *vision.Image, uid string, groupID string, options map[string]interface{}) (*VerifyResponse, error) {
-	if fc.AccessToken == "" {
-		if err := fc.Auth(); err != nil {
-			return nil, err
-		}
+	if err := fc.Auth(); err != nil {
+		return nil, err
 	}
-
 	encodedImg, err := img.Base64Encode()
 	if err != nil {
 		return nil, err
@@ -80,10 +74,8 @@ type MultiVerifyResponse struct {
 }
 
 func (fc FaceClient) MultiVerify(image vision.Image, groupIDs []string, options map[string]interface{}) (*MultiVerifyResponse, error) {
-	if fc.AccessToken == "" {
-		if err := fc.Auth(); err != nil {
-			return nil, err
-		}
+	if err := fc.Auth(); err != nil {
+		return nil, err
 	}
 
 	encodedImage, err := image.Base64Encode()

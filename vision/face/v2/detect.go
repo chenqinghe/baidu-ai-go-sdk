@@ -14,7 +14,6 @@ type FaceResponse struct {
 }
 
 func (fc *FaceClient) DetectAndAnalysis(image *vision.Image, options map[string]interface{}) (*FaceResponse, error) {
-
 	if err := fc.Auth(); err != nil {
 		return nil, err
 	}

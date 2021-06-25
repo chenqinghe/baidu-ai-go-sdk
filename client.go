@@ -2,6 +2,8 @@ package gosdk
 
 import (
 	"errors"
+	"strconv"
+	"time"
 
 	"github.com/imroc/req"
 )
@@ -19,6 +21,7 @@ type Client struct {
 	ClientID     string
 	ClientSecret string
 	AccessToken  string
+	expireAt     time.Time
 	Authorizer   Authorizer
 }
 
@@ -53,11 +56,14 @@ func (da DefaultAuthorizer) Authorize(client *Client) error {
 	}
 
 	client.AccessToken = authresponse.AccessToken
+	expireIn, _ := strconv.Atoi(authresponse.ExpireIn)
+	// 记录AccessToken 过期时间，过期时间前60秒就触发刷新
+	client.expireAt = time.Now().Add(time.Second * time.Duration(expireIn-60))
 	return nil
 }
 
 func (client *Client) Auth() error {
-	if client.AccessToken != "" {
+	if client.AccessToken != "" && time.Now().Before(client.expireAt) {
 		return nil
 	}
 
