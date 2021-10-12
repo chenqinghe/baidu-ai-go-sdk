@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	FACE_MATCH_URL = "https://aip.baidubce.com/rest/2.0/face/v2/match"
+	faceMatchUrl = "https://aip.baidubce.com/rest/2.0/face/v2/match"
 )
 
 func (fc FaceClient) Match(img1, img2 *vision.Image, options map[string]interface{}) (*FaceResponse, error) {
@@ -30,7 +30,7 @@ func (fc FaceClient) Match(img1, img2 *vision.Image, options map[string]interfac
 	header := req.Header{
 		"Content-Type": "application/x-www-form-urlencoded",
 	}
-	url := fmt.Sprintf("%s?access_token=%s", FACE_MATCH_URL, fc.AccessToken)
+	url := fmt.Sprintf("%s?access_token=%s", faceMatchUrl, fc.AccessToken)
 	resp, err := req.Post(url, header, req.Param(options))
 	if err != nil {
 		return nil, err
