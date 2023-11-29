@@ -54,6 +54,15 @@ func DetectDirection() RequestParam {
 	}
 }
 
+// 是否开启身份证质量类型(边框/四角不完整、头像或关键字段被遮挡/马赛克)检测功能，默认不开启，即：false。可选值包括:
+// - true：裁剪；
+// - false：不裁剪。
+func DetectQuality() RequestParam {
+	return func(m map[string]interface{}) {
+		m["detect_quality"] = true
+	}
+}
+
 // 是否检测头像内容，默认不检测。可选值：true-检测头像并返回头像的 base64 编码及位置信息。可选值包括:
 // - true：裁剪；
 // - false：不裁剪。
