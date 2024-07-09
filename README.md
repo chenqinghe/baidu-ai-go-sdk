@@ -74,6 +74,17 @@
 #### 文本审核
 - [ ] 通用类文本反作弊
 
+### 图像增强与特效
+
+#### 图像特效
+- [x] 黑白图片上色
+
+#### 图像增强
+- [x] 图像对比度增强
+- [x] 图像无损放大
+- [x] 图像清晰度增强
+- [x] 图像色彩增强
+
 
 # LISENCE
 the project is licensed under the [Apache License 2.0](https://github.com/chenqinghe/baidu-ai-go-sdk/blob/master/LICENSE) 
